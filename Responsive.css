@@ -1,0 +1,19 @@
+/* Mobiles */
+@media (max-width: 768px) {
+  .loginbtn {
+   justify-content: end;
+}
+.navbar-toggler
+{
+   position:relative;
+}
+
+.below-hero .row
+{
+    display: block;;
+}
+.quick-links {
+    position: relative;
+    left: 0%;
+}
+}

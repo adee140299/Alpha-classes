@@ -1,0 +1,201 @@
+.logo
+{
+    font-size: 30px!important;
+    color: #d3000a!important;
+}
+.navul a{
+    color:black;
+    text-decoration: none;
+}
+.loginbtn
+{
+    position: relative;
+    right:0%;
+}
+.navbar
+{
+    padding-top: 20px!important;
+    padding-bottom: 20px!important;
+}
+/* hero image start */
+.hero-section {
+  background-image: url('./images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80vh;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 600px;
+  padding-top: 50px;
+}
+/* why choose us */
+.whychooseus
+{
+    padding-top: 5%;
+
+}
+.whychooseus_img
+{
+    padding-top: 10%;
+    height:auto;
+    width: 100%;;
+}
+.number-detail
+{
+    padding-top: 5%;
+    background-color: #f9f9f9;
+}
+.numbers
+{
+    text-align: center;
+}
+#courses
+{
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+.card1
+{
+    height:100%;
+}
+.footer
+{
+    padding-top: 5%;
+    background-color: #f9f9f9;
+    
+}
+.quick-links
+{
+    position: relative;
+    left: 10%;
+}
+.footer-links a
+{
+    text-decoration: none;
+    color: black;
+    
+    
+
+}
+.footer-social a
+{
+    text-decoration: none;
+    color: black;
+}
+.email a{
+    text-decoration: none;
+    color: black;
+}
+/* about page */
+.belownavbar
+{
+    background-color: #d3000a;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
+}
+.testimonials
+{
+    background-color: #f9f9f9;
+}
+#testimonials .card {
+  border: 1px solid grey;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Card shadow */
+  background-color: #fff;
+  overflow: hidden;
+  transition: border 0.3s ease;
+}
+
+/* Image styling */
+#testimonials .card-img-top {
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50% !important;
+  border: 1px solid grey;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* ⬅️ full shadow all around */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Hover effect on image only */
+#testimonials .card-img-top:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5); /* ⬅️ Stronger full shadow */
+  border-color: #000;
+}
+/* Trainers page */
+#trainers .trainer-card {
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+#trainers .trainer-img {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#trainers .trainer-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: opacity 0.3s ease;
+}
+
+#trainers .social-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#trainers .social-icons a {
+  color: #fff;
+  font-size: 18px;
+}
+
+#trainers .trainer-img:hover .social-icons {
+  opacity: 1;
+}
+
+#trainers .trainer-card h4 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#trainers .trainer-card .subject {
+  font-style: italic;
+  color: #777;
+  margin-bottom: 10px;
+}
+
