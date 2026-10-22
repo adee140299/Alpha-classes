@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha classes</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="Responsive.css"/>
-    <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Faculty & Mentors — Alpha Classes | Experienced Educators</title>
+  <link rel="icon" type="image/png" href="./images/science.png">
 
+  <!-- Fonts & Icons & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Responsive.css"/>
 </head>
 <body>
-   <!-- nav bar section start -->
-  <section class="navbarofwebsite">
-    <div class="navbardiv  ">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
-        <a class="navbar-brand logo" href="#">ALPHA CLASSES</a>
-        <!-- Optional toggler for small screen -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+  <!-- Sticky Modern Navbar -->
+  <header class="navbarofwebsite">
+    <div class="container-fluid px-lg-4">
+      <nav class="navbar navbar-expand-lg navbar-light py-2">
+        <a class="navbar-brand logo" href="index.html">
+          <span class="brand-alpha-symbol">α</span>
+          <span>ALPHA CLASSES</span>
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="nav navul mx-auto">
+          <ul class="nav navul mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link" href="index.html">Home</a>
             </li>
@@ -35,137 +41,159 @@
               <a class="nav-link" href="Courses.html">Courses</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Trainer.html">Trainers</a>
+              <a class="nav-link active" href="Trainer.html">Faculty</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Pricing.html">Pricing</a>
+              <a class="nav-link" href="Pricing.html">Fee Structure</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="Contact.html">Contact</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-danger fw-bold" href="portal.html">Teacher Portal</a>
-            </li>
           </ul>
+
+          <div class="navbar-cta-group d-flex align-items-center gap-2">
+            <a href="login.html?type=student" class="btn-student-nav" title="Student & Parent Portal">
+              <i class="bi bi-mortarboard-fill text-primary"></i>
+              <span>Student Portal</span>
+            </a>
+            <a href="login.html" class="loginbtn" title="Staff Classroom Portal">
+              <i class="bi bi-person-badge-fill"></i>
+              <span>Teacher Login</span>
+            </a>
+          </div>
         </div>
-        <a href="portal.html" class="btn btn-danger loginbtn"><i class="bi bi-speedometer2 me-1"></i> Teacher Portal</a>
       </nav>
     </div>
-  </section>
-  <!-- navbar section ends -->
-   <!-- below nav bar section -->
-    <section class="belownavbar">
-        <div class="container-fluid">
-            <div>
-                <h1 class="text-center">Trainers</h1>
-                <p class="text-center">We provide expert coaching from Class 1 to 12 across all subjects.</p>
-                <p class="text-center">Tailored batches available for Hindi, Semi-English, and English medium students.</p>
-            </div>
-        </div>
-    </section>
-    <!-- below nav bar section ends -->
-     <!-- trainers section -->
-      <section id="trainers" class="py-5">
-  <div class="container">
-    <h2 class="text-center mb-5">Our Trainers</h2>
-    <div class="row justify-content-center text-center">
+  </header>
 
-      <!-- Trainer 1 -->
-      <div class="col-md-4 mb-4">
-        <div class="trainer-card">
-          <div class="trainer-img">
-            <img src="./images/Amarnath-sir.jpeg" alt="Walter White">
-            <div class="social-icons">
-              <a href="#"><i class="fab fa-x-twitter"></i></a>
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <h4>Amarnath Yadav</h4>
-          <p class="subject">BSC (B.ed)</p>
-          <p>A dedicated educator committed to guiding students towards strong academic foundations and confident learning.</p>
-        </div>
-      </div>
-
-      <!-- Trainer 2 -->
-      <div class="col-md-4 mb-4">
-        <div class="trainer-card">
-          <div class="trainer-img">
-            <img src="./images/poonam_image.png" alt="Sarah Jhonson">
-            <div class="social-icons">
-              <a href="#"><i class="fab fa-x-twitter"></i></a>
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <h4>Poonam Yadav</h4>
-          <p class="subject">B.A (D.Ed)</p>
-          <p>Passionate about nurturing young learners with patience, clarity, and a student-first teaching approach.</p>
-        </div>
-      </div>
-
-      <!-- Trainer 3 -->
-      <div class="col-md-4 mb-4">
-        <div class="trainer-card">
-          <div class="trainer-img">
-            <img src="./images/my photo.png" alt="William Anderson">
-            <div class="social-icons">
-              <a href="#"><i class="fab fa-x-twitter"></i></a>
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <h4>Pradeep Yadav</h4>
-          <p class="subject">M.Sc-IT, B.Ed</p>
-          <p>Blending technology, creativity, and modern methodologies to make learning practical, engaging, and future-ready.</p>
-        </div>
-      </div>
-
+  <!-- Page Banner -->
+  <section class="py-5 text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+    <div class="container text-center py-4">
+      <span class="badge bg-danger px-3 py-2 rounded-pill text-uppercase mb-3">Expert Mentorship</span>
+      <h1 class="display-4 fw-bold">Meet Our Educators</h1>
+      <p class="lead text-light mx-auto" style="max-width: 700px;">
+        Guided by decades of dedicated classroom teaching experience, empathy, and proven board results.
+      </p>
     </div>
-  </div>
-</section>
-    <!-- trainers section close -->
-    <!-- footer section start -->
-    <section class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Alpha Classes</h5>
-                    <p>Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087.</p>
-                    <p>Phone:+91 9821016457</p>
-                    <p class="email">Email: <a href="mailto:pray14299@gmail.com">pray14299@gmail.com</a></p>
-                </div>
-                <div class="col-md-4 quick-links">
-                    <h5>Quick Links</h5>
-                    <ul class="footer-links list-unstyled">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="About.html">About</a></li>
-                        <li><a href="Courses.html">Courses</a></li>
-                        <li><a href="Trainer.html">Trainers</a></li>
-                        <li><a href="Pricing.html">Pricing</a></li>
-                        <li><a href="Contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Follow Us</h5>
-                    <ul class="list-unstyled footer-social">
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">LinkedIn</a></li>
-                    </ul>
-                </div>
+  </section>
+
+  <!-- Faculty Grid -->
+  <section class="founders py-5">
+    <div class="container">
+      <div class="section-header-wrap">
+        <span class="section-tag">Teaching Excellence</span>
+        <h2 class="section-title">Core Faculty Team</h2>
+        <p class="text-muted">Every instructor at Alpha Classes brings subject mastery and personalized attention to your child's education.</p>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <!-- Faculty 1 -->
+        <div class="col-md-4">
+          <div class="faculty-card h-100">
+            <div class="faculty-avatar-wrap">
+              <img src="./images/Amarnath-sir.png" alt="Amarnath Yadav Sir">
             </div>
-            <div class="text-center mt-4">
-                <p>&copy; 2023 Alpha Classes. All rights reserved.</p>
+            <h4 class="faculty-name">Amarnath Yadav</h4>
+            <div class="faculty-qualification">B.Sc, B.Ed | Senior Educator</div>
+            <p class="faculty-bio">
+              Retired BMC educator with over 26+ years of classroom experience. Renowned for simplifying complex science and math concepts with utmost patience, care, and disciplined foundation.
+            </p>
+            <div class="mt-3 pt-3 border-top">
+              <span class="badge bg-light text-danger fw-bold border">26+ Years Experience</span>
             </div>
+          </div>
         </div>
-    </section>
-    <!-- footer section end --> 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+        <!-- Faculty 2 -->
+        <div class="col-md-4">
+          <div class="faculty-card h-100">
+            <div class="faculty-avatar-wrap">
+              <img src="./images/poonam_image.png" alt="Poonam Yadav Ma'am">
+            </div>
+            <h4 class="faculty-name">Poonam Yadav</h4>
+            <div class="faculty-qualification">B.A, D.Ed | Foundation Specialist</div>
+            <p class="faculty-bio">
+              Specializes in child psychology, reading comprehension, and primary-secondary bridge programs, ensuring every young learner develops genuine curiosity and confidence.
+            </p>
+            <div class="mt-3 pt-3 border-top">
+              <span class="badge bg-light text-danger fw-bold border">Foundation Expert</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Faculty 3 -->
+        <div class="col-md-4">
+          <div class="faculty-card h-100">
+            <div class="faculty-avatar-wrap">
+              <img src="./images/my photo.png" alt="Pradeep Yadav Sir" onerror="this.src='./images/my photo.jpg'">
+            </div>
+            <h4 class="faculty-name">Pradeep Yadav</h4>
+            <div class="faculty-qualification">M.Sc-IT, B.Ed | EdTech & Science Head</div>
+            <p class="faculty-bio">
+              Blending modern technology, analytical problem-solving, and interactive learning methodologies to prepare students for board exams and competitive thinking.
+            </p>
+            <div class="mt-3 pt-3 border-top">
+              <span class="badge bg-light text-danger fw-bold border">Science & Tech Head</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modern Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="brand-alpha-symbol" style="width:34px; height:34px; font-size:18px;">α</span>
+            <span class="fw-bold text-white fs-4">ALPHA CLASSES</span>
+          </div>
+          <p class="text-secondary small mb-3">
+            Committed to quality education and academic mentorship across Mumbai. Building discipline, conceptual strength, and top board results since 1998.
+          </p>
+          <p class="mb-1 small text-light"><i class="bi bi-geo-alt-fill text-danger me-2"></i> Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087</p>
+          <p class="mb-1 small text-light"><i class="bi bi-telephone-fill text-danger me-2"></i> +91 9821016457</p>
+          <p class="small text-light"><i class="bi bi-envelope-fill text-danger me-2"></i> pray14299@gmail.com</p>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-6 quick-links">
+          <h5>Quick Links</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="About.html">About Us</a></li>
+            <li><a href="Courses.html">Courses</a></li>
+            <li><a href="Trainer.html">Our Trainers</a></li>
+            <li><a href="Pricing.html">Fee Structure</a></li>
+            <li><a href="Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-6">
+          <h5>Online Portals</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="login.html?type=student"><i class="bi bi-mortarboard me-1 text-primary"></i> Student Portal</a></li>
+            <li><a href="login.html"><i class="bi bi-shield-lock me-1 text-danger"></i> Teacher Login</a></li>
+            <li><a href="portal.html"><i class="bi bi-speedometer2 me-1 text-danger"></i> Classroom Manager</a></li>
+            <li><a href="login.html?type=student"><i class="bi bi-receipt me-1 text-success"></i> Download Receipts</a></li>
+            <li><a href="login.html?type=student"><i class="bi bi-calendar-check me-1 text-info"></i> Attendance Status</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h5>Meet Us</h5>
+          <p class="small text-secondary mb-3">Visit our classroom in Morarji Nagar or book a free trial lecture.</p>
+          <a href="Contact.html" class="btn btn-danger w-100 py-2 fw-bold">Book Trial Class</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="mb-0">&copy; 2026 Alpha Classes. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

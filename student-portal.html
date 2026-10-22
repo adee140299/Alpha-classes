@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal — Alpha Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="portal.css">
+  <style>
+    .student-portal-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 30px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .student-portal-header::after {
+      content: 'α';
+      position: absolute;
+      right: 20px;
+      bottom: -30px;
+      font-size: 180px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .gauge-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(#10b981 var(--att-deg, 270deg), #e2e8f0 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      position: relative;
+    }
+    .gauge-circle::before {
+      content: '';
+      position: absolute;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+    .gauge-value {
+      position: relative;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .announcement-card {
+      border-left: 4px solid var(--primary-red);
+      background: #fff;
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border-top: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+<body class="portal-body">
+
+  <div class="container py-4" style="max-width: 1160px;">
+    <!-- Top Navigation bar -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-2">
+        <div class="brand-badge" style="width:36px;height:36px;font-size:18px;">α</div>
+        <div>
+          <h4 class="fw-bold mb-0 text-dark">ALPHA CLASSES</h4>
+          <span class="small text-muted fw-bold">Student & Parent Portal</span>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="index.html" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-house me-1"></i> Public Website
+        </a>
+        <button id="studentLogoutBtn" class="btn btn-sm btn-outline-danger">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Student Welcome Hero Banner -->
+    <div class="student-portal-header">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <span class="badge bg-danger mb-2">Student Dashboard</span>
+          <h2 class="display-6 fw-bold mb-1" id="stName">Student Name</h2>
+          <p class="text-light opacity-75 mb-3" id="stMeta">Class 10 (SSC Board) • Evening Batch (5:30 PM - 8:00 PM)</p>
+          <div class="d-flex flex-wrap gap-3 small">
+            <div><i class="bi bi-card-text text-danger me-1"></i> Roll No: <strong id="stRoll">AC-101</strong></div>
+            <div><i class="bi bi-person text-danger me-1"></i> Parent: <strong id="stParent">-</strong></div>
+            <div><i class="bi bi-telephone text-danger me-1"></i> Registered Phone: <strong id="stPhone">-</strong></div>
+          </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <a href="https://wa.me/919821016457?text=Hello%20Pradeep%20Sir,%20I%20have%20an%20inquiry%20regarding%20my%20child%20at%20Alpha%20Classes." target="_blank" class="btn btn-success fw-bold">
+            <i class="bi bi-whatsapp me-1"></i> Contact Teacher / Sir
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Cards Grid -->
+    <div class="row g-4 mb-4">
+      <!-- Card 1: Attendance Summary -->
+      <div class="col-lg-6">
+        <div class="portal-card h-100">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-calendar2-check-fill text-success"></i> My Attendance Record</h2>
+            <span class="badge bg-light text-dark border" id="attCurrentMonthText">This Month</span>
+          </div>
+          <div class="portal-card-body text-center">
+            <div class="gauge-circle" id="attGauge">
+              <span class="gauge-value" id="attPercentText">0%</span>
+            </div>
+            <h5 class="fw-bold mb-1" id="attStatusWord">Attendance Status: Excellent</h5>
+            <p class="small text-muted mb-4">Keep attending regularly to master your board exam subjects!</p>
+
+            <div class="row g-2 text-center">
+              <div class="col-3">
+                <div class="p-2 border rounded bg-light">
+                  <div class="h5 fw-bold text-dark mb-0" id="statTotalClasses">0</div>
+                  <div class="small text-muted" style="font-size:0.7rem;">TOTAL</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 border rounded" style="background:#ecfdf5;">
+                  <div class="h5 fw-bold text-success mb-0" id="statPresentDays">0</div>
+                  <div class="small text-muted" style="font-size:0.7rem;">PRESENT</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 border rounded" style="background:#fef2f2;">
+                  <div class="h5 fw-bold text-danger mb-0" id="statAbsentDays">0</div>
+                  <div class="small text-muted" style="font-size:0.7rem;">ABSENT</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 border rounded" style="background:#fffbeb;">
+                  <div class="h5 fw-bold text-warning mb-0" id="statLateDays">0</div>
+                  <div class="small text-muted" style="font-size:0.7rem;">LATE</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-3">
+            <h6 class="text-start fw-bold small text-muted text-uppercase mb-2">Recent Attendance Log</h6>
+            <div id="stRecentAttList" class="text-start" style="max-height: 160px; overflow-y: auto;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Fee Status & Receipts -->
+      <div class="col-lg-6">
+        <div class="portal-card h-100">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-wallet2 text-danger"></i> Fee Status & Receipts</h2>
+            <span class="status-pill status-paid" id="stFeeStatusPill">PAID</span>
+          </div>
+          <div class="portal-card-body">
+            <div class="p-3 rounded mb-3 border bg-light d-flex justify-content-between align-items-center">
+              <div>
+                <span class="text-muted small fw-bold text-uppercase d-block">Monthly Coaching Fee</span>
+                <h4 class="fw-bold mb-0 text-dark" id="stMonthlyFeeText">₹2,500</h4>
+              </div>
+              <div class="text-end">
+                <span class="text-muted small fw-bold text-uppercase d-block" id="stMonthLabel">Billing Month</span>
+                <span class="h5 fw-bold text-success mb-0" id="stAmountDueText">All Clear</span>
+              </div>
+            </div>
+
+            <h6 class="fw-bold small text-muted text-uppercase mb-2">Payment Receipts History</h6>
+            <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Month</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Receipt</th>
+                  </tr>
+                </thead>
+                <tbody id="stPaymentHistoryBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alert alert-info py-2 px-3 small mt-3 mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle-fill fs-5 text-info"></i>
+              <span>Payments can be submitted via GPay/PhonePe to <strong>+91 9821016457</strong> or at office.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Notice Board & Class Routine -->
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-megaphone-fill text-warning"></i> Class Announcements & Notice Board</h2>
+          </div>
+          <div class="portal-card-body" id="stAnnouncementsList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-clock-history text-primary"></i> Batch Timings & Schedule</h2>
+          </div>
+          <div class="portal-card-body">
+            <ul class="list-group list-group-flush small">
+              <li class="list-group-item d-flex justify-content-between px-0">
+                <span><i class="bi bi-sun text-warning me-1"></i> Morning Batch:</span>
+                <strong>8:00 AM – 10:30 AM</strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between px-0">
+                <span><i class="bi bi-brightness-high text-info me-1"></i> Afternoon Batch:</span>
+                <strong>2:00 PM – 4:30 PM</strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between px-0">
+                <span><i class="bi bi-moon-stars text-danger me-1"></i> Evening Batch:</span>
+                <strong>5:30 PM – 8:00 PM</strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between px-0">
+                <span><i class="bi bi-journal-check text-success me-1"></i> Sunday Test:</span>
+                <strong>9:00 AM – 11:30 AM</strong>
+              </li>
+            </ul>
+
+            <div class="mt-3 p-3 rounded border bg-light text-center">
+              <p class="small text-muted mb-1">Center Address:</p>
+              <p class="small fw-bold mb-0">Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Printable Fee Receipt Modal -->
+  <div class="modal fade" id="studentReceiptModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header no-print">
+          <h5 class="modal-title fw-bold">Official Fee Receipt</h5>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-danger btn-sm" onclick="window.print()">
+              <i class="bi bi-printer"></i> Print Receipt
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-4">
+          <div class="receipt-paper" id="receiptPaper">
+            <div class="receipt-header">
+              <h2>ALPHA CLASSES</h2>
+              <p>Specialized Coaching for Class 1 to 12 & Science Stream (English & Semi-English)</p>
+              <p>Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087 • Phone: +91 9821016457</p>
+              <span class="receipt-title-badge">FEE RECEIPT</span>
+            </div>
+
+            <div class="receipt-meta-grid">
+              <div><strong>Receipt No:</strong> <span id="stRecNo">-</span></div>
+              <div class="text-end"><strong>Date:</strong> <span id="stRecDate">-</span></div>
+              <div><strong>Student Name:</strong> <span id="stRecStudentName">-</span></div>
+              <div class="text-end"><strong>Roll No:</strong> <span id="stRecRollNo">-</span></div>
+              <div><strong>Class / Grade:</strong> <span id="stRecClass">-</span></div>
+              <div class="text-end"><strong>Billing Month:</strong> <span id="stRecMonth">-</span></div>
+            </div>
+
+            <table class="receipt-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Total Monthly Fee</th>
+                  <th>Amount Paid</th>
+                  <th>Balance Due</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Monthly Tuition Coaching Fee</td>
+                  <td id="stRecTotalFee">₹0</td>
+                  <td id="stRecAmountPaid" class="fw-bold text-success">₹0</td>
+                  <td id="stRecBalanceDue" class="fw-bold text-danger">₹0</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="row mb-3">
+              <div class="col-8">
+                <p class="mb-1 small"><strong>Payment Mode:</strong> <span id="stRecPaymentMode">Cash / Online</span></p>
+                <p class="mb-0 small text-muted"><strong>Status:</strong> <span class="text-success fw-bold">Payment Verified</span></p>
+              </div>
+              <div class="col-4 text-end">
+                <h5 class="fw-bold text-danger mb-0">PAID: <span id="stRecPaidBadge">₹0</span></h5>
+              </div>
+            </div>
+
+            <div class="receipt-signatures">
+              <div class="signature-line">Student / Parent Signature</div>
+              <div class="signature-line">Authorized Signatory (Alpha Classes)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="student-portal.js"></script>
+</body>
+</html>

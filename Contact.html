@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha classes</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="Responsive.css"/>
-    <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us & Admissions — Alpha Classes | Morarji Nagar, Mumbai</title>
+  <link rel="icon" type="image/png" href="./images/science.png">
 
+  <!-- Fonts & Icons & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Responsive.css"/>
 </head>
 <body>
-   <!-- nav bar section start -->
-  <section class="navbarofwebsite">
-    <div class="navbardiv  ">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
-        <a class="navbar-brand logo" href="#">ALPHA CLASSES</a>
-        <!-- Optional toggler for small screen -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+  <!-- Sticky Modern Navbar -->
+  <header class="navbarofwebsite">
+    <div class="container-fluid px-lg-4">
+      <nav class="navbar navbar-expand-lg navbar-light py-2">
+        <a class="navbar-brand logo" href="index.html">
+          <span class="brand-alpha-symbol">α</span>
+          <span>ALPHA CLASSES</span>
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="nav navul mx-auto">
+          <ul class="nav navul mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link" href="index.html">Home</a>
             </li>
@@ -36,132 +41,187 @@
               <a class="nav-link" href="Courses.html">Courses</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Trainer.html">Trainers</a>
+              <a class="nav-link" href="Trainer.html">Faculty</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Pricing.html">Pricing</a>
+              <a class="nav-link" href="Pricing.html">Fee Structure</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Contact.html">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-danger fw-bold" href="portal.html">Teacher Portal</a>
+              <a class="nav-link active" href="Contact.html">Contact</a>
             </li>
           </ul>
+
+          <div class="navbar-cta-group d-flex align-items-center gap-2">
+            <a href="login.html?type=student" class="btn-student-nav" title="Student & Parent Portal">
+              <i class="bi bi-mortarboard-fill text-primary"></i>
+              <span>Student Portal</span>
+            </a>
+            <a href="login.html" class="loginbtn" title="Staff Classroom Portal">
+              <i class="bi bi-person-badge-fill"></i>
+              <span>Teacher Login</span>
+            </a>
+          </div>
         </div>
-        <a href="portal.html" class="btn btn-danger loginbtn"><i class="bi bi-speedometer2 me-1"></i> Teacher Portal</a>
       </nav>
     </div>
-  </section>
-  <!-- navbar section ends -->
-   <!-- below nav bar section -->
-    <section class="belownavbar">
-        <div class="container-fluid">
-            <div>
-                <h1 class="text-center">Contact</h1>
-                <p class="text-center">Have questions or want to enroll? Reach out to us today</p>
-                <p class="text-center">— we're happy to help you get started on your learning journey!</p>
-            </div>
-        </div>
-    </section>
-    <!-- below nav bar section ends -->
-     <!-- contact section -->
-      <section id="contact" class="py-5">
-  <div class="container">
-    <div class="row">
-      
-      <!-- Left Column: Contact Details -->
-      <div class="col-md-6">
-        <div class="mb-4 d-flex align-items-center">
-          <div style="background-color: #d3000a; width: 50px; height: 50px;" class="rounded-circle d-flex justify-content-center align-items-center text-white me-3">
-            <i class="bi bi-geo-alt-fill fs-4"></i>
-          </div>
-          <div>
-            <h5 class="mb-1">Address</h5>
-            <p class="mb-0">Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087.</p>
-          </div>
-        </div>
+  </header>
 
-        <div class="mb-4 d-flex align-items-center">
-          <div style="background-color: #d3000a; width: 50px; height: 50px;" class="rounded-circle d-flex justify-content-center align-items-center text-white me-3">
-            <i class="bi bi-telephone-fill fs-4"></i>
-          </div>
-          <div>
-            <h5 class="mb-1">Call Us</h5>
-            <p class="mb-0">+91 9821016457</p>
-          </div>
-        </div>
-
-        <div class="mb-4 d-flex align-items-center">
-          <div style="background-color: #d3000a; width: 50px; height: 50px;" class="rounded-circle d-flex justify-content-center align-items-center text-white me-3">
-            <i class="bi bi-envelope-fill fs-4"></i>
-          </div>
-          <div>
-            <h5 class="mb-1">Email Us</h5>
-            <p class="mb-0">pray14299@gmail.com</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Google Map -->
-      <div class="col-md-6">
-        <!-- Right Column: Google Map -->
-        <div class="col-md-6">
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7538.859656145428!2d72.89453759213322!3d19.1326534783342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c7fff0fa1333%3A0xb7acf68c6ac70d3d!2sMorarji%20Nagar%2C%20Powai%2C%20Mumbai%2C%20Maharashtra%20400076!5e0!3m2!1sen!2sin!4v1751546530574!5m2!1sen!2sin" 
-            width="200%" 
-            height="350" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        </div>
-
-      </div>
-
+  <!-- Page Banner -->
+  <section class="py-5 text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+    <div class="container text-center py-4">
+      <span class="badge bg-danger px-3 py-2 rounded-pill text-uppercase mb-3">Get in Touch</span>
+      <h1 class="display-4 fw-bold">Contact & Admissions</h1>
+      <p class="lead text-light mx-auto" style="max-width: 700px;">
+        Have questions about batches, fees, or want to schedule a free demo lecture? We'd love to hear from you.
+      </p>
     </div>
-  </div>
-</section>
-    <!-- contact section ends -->
-     <!-- footer section start -->
-    <section class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Alpha Classes</h5>
-                    <p>Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087.</p>
-                    <p>Phone:+91 9821016457</p>
-                    <p class="email">Email: <a href="mailto:pray14299@gmail.com">pray14299@gmail.com</a></p>
-                </div>
-                <div class="col-md-4 quick-links">
-                    <h5>Quick Links</h5>
-                    <ul class="footer-links list-unstyled">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="About.html">About</a></li>
-                        <li><a href="Courses.html">Courses</a></li>
-                        <li><a href="Trainer.html">Trainers</a></li>
-                        <li><a href="Pricing.html">Pricing</a></li>
-                        <li><a href="Contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Follow Us</h5>
-                    <ul class="list-unstyled footer-social">
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">LinkedIn</a></li>
-                    </ul>
-                </div>
+  </section>
+
+  <!-- Contact Information & Inquiry Form -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row g-5">
+        <!-- Contact Details & Form -->
+        <div class="col-lg-6">
+          <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+            <span class="section-tag mb-2">Reach Out Directly</span>
+            <h3 class="fw-bold mb-4">Contact Information</h3>
+
+            <!-- Address Item -->
+            <div class="d-flex align-items-start gap-3 mb-4">
+              <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
+                <i class="bi bi-geo-alt-fill fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Classroom Address</h6>
+                <p class="text-muted small mb-0">Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087, Maharashtra, India.</p>
+              </div>
             </div>
-            <div class="text-center mt-4">
-                <p>&copy; 2023 Alpha Classes. All rights reserved.</p>
+
+            <!-- Phone Item -->
+            <div class="d-flex align-items-start gap-3 mb-4">
+              <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
+                <i class="bi bi-telephone-fill fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Direct Phone & WhatsApp</h6>
+                <p class="text-muted small mb-1">+91 9821016457</p>
+                <a href="https://wa.me/919821016457" target="_blank" class="btn btn-sm btn-outline-success rounded-pill fw-bold">
+                  <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
+                </a>
+              </div>
             </div>
+
+            <!-- Email Item -->
+            <div class="d-flex align-items-start gap-3 mb-4">
+              <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
+                <i class="bi bi-envelope-fill fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Official Email</h6>
+                <p class="text-muted small mb-0"><a href="mailto:pray14299@gmail.com" class="text-secondary text-decoration-none">pray14299@gmail.com</a></p>
+              </div>
+            </div>
+
+            <!-- Operating Hours Item -->
+            <div class="d-flex align-items-start gap-3">
+              <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
+                <i class="bi bi-clock-fill fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Operating Hours</h6>
+                <p class="text-muted small mb-0">Monday – Saturday: 8:00 AM – 9:00 PM<br>Sunday: 9:00 AM – 2:00 PM</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
-    <!-- footer section end --> 
-     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+        <!-- Google Map & Directions -->
+        <div class="col-lg-6">
+          <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm h-100 d-flex flex-column">
+            <span class="section-tag mb-2">Location Map</span>
+            <h3 class="fw-bold mb-4">Find Us in Powai / Nitie</h3>
+
+            <div class="rounded-4 overflow-hidden border flex-grow-1" style="min-height: 320px;">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7538.859656145428!2d72.89453759213322!3d19.1326534783342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c7fff0fa1333%3A0xb7acf68c6ac70d3d!2sMorarji%20Nagar%2C%20Powai%2C%20Mumbai%2C%20Maharashtra%20400076!5e0!3m2!1sen!2sin!4v1751546530574!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style="border:0; min-height: 320px;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-muted d-block">Landmark:</small>
+                <span class="fw-bold text-dark">Prince Collection, Near Aarey Road</span>
+              </div>
+              <a href="https://maps.google.com/?q=Morarji+Nagar+Powai+Mumbai" target="_blank" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                Open in Maps <i class="bi bi-box-arrow-up-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modern Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="brand-alpha-symbol" style="width:34px; height:34px; font-size:18px;">α</span>
+            <span class="fw-bold text-white fs-4">ALPHA CLASSES</span>
+          </div>
+          <p class="text-secondary small mb-3">
+            Committed to quality education and academic mentorship across Mumbai. Building discipline, conceptual strength, and top board results since 1998.
+          </p>
+          <p class="mb-1 small text-light"><i class="bi bi-geo-alt-fill text-danger me-2"></i> Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087</p>
+          <p class="mb-1 small text-light"><i class="bi bi-telephone-fill text-danger me-2"></i> +91 9821016457</p>
+          <p class="small text-light"><i class="bi bi-envelope-fill text-danger me-2"></i> pray14299@gmail.com</p>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-6 quick-links">
+          <h5>Quick Links</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="About.html">About Us</a></li>
+            <li><a href="Courses.html">Courses</a></li>
+            <li><a href="Trainer.html">Our Trainers</a></li>
+            <li><a href="Pricing.html">Fee Structure</a></li>
+            <li><a href="Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-6">
+          <h5>Online Portals</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="login.html?type=student"><i class="bi bi-mortarboard me-1 text-primary"></i> Student Portal</a></li>
+            <li><a href="login.html"><i class="bi bi-shield-lock me-1 text-danger"></i> Teacher Login</a></li>
+            <li><a href="portal.html"><i class="bi bi-speedometer2 me-1 text-danger"></i> Classroom Manager</a></li>
+            <li><a href="login.html?type=student"><i class="bi bi-receipt me-1 text-success"></i> Download Receipts</a></li>
+            <li><a href="login.html?type=student"><i class="bi bi-calendar-check me-1 text-info"></i> Attendance Status</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h5>Admission Helpline</h5>
+          <p class="small text-secondary mb-3">Call our counselors directly for batch timings and enrollment.</p>
+          <a href="tel:+919821016457" class="btn btn-danger w-100 py-2 fw-bold">Call: +91 9821016457</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="mb-0">&copy; 2026 Alpha Classes. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -6,6 +6,13 @@
 (function () {
   'use strict';
 
+  // Auth Guard: Ensure teacher session exists
+  const currentTeacher = typeof AlphaAuth !== 'undefined' ? AlphaAuth.getCurrentTeacher() : null;
+  if (!currentTeacher) {
+    window.location.href = 'login.html';
+    return;
+  }
+
   const STORAGE_KEY = 'alpha_classes_data_v1';
 
   // Seed demo data so the teacher can test immediately
@@ -147,7 +154,9 @@
       'attendance': { title: 'Daily Attendance Tracker', sub: 'Record and track student attendance' },
       'monthly-register': { title: 'Monthly Attendance Register', sub: 'Comprehensive monthly attendance sheet' },
       'fees': { title: 'Student Fees & Accounts', sub: 'Track fee payments, dues and issue receipts' },
-      'students': { title: 'Student Directory', sub: 'Manage enrolled student roster and details' }
+      'students': { title: 'Student Directory', sub: 'Manage enrolled student roster and details' },
+      'teachers': { title: 'Staff & Teacher Access', sub: 'Manage teacher logins and role permissions' },
+      'announcements': { title: 'Notice Board Management', sub: 'Post announcements for students & parents' }
     };
 
     if (titles[tabName]) {
@@ -161,6 +170,8 @@
     if (tabName === 'monthly-register') renderMonthlyRegister();
     if (tabName === 'fees') renderFeesLedger();
     if (tabName === 'students') renderStudentsTable();
+    if (tabName === 'teachers') renderTeachersTable();
+    if (tabName === 'announcements') renderTeacherAnnouncements();
 
     // Close mobile sidebar
     document.getElementById('portalSidebar').classList.remove('open');
@@ -783,6 +794,101 @@
   }
 
   /* ==========================================================================
+     Tab 6: Staff & Teachers Access Management
+     ========================================================================== */
+  function renderTeachersTable() {
+    const tbody = document.getElementById('teachersTableBody');
+    tbody.innerHTML = '';
+
+    const teachers = AlphaAuth.getTeachers();
+
+    teachers.forEach(t => {
+      const tr = document.createElement('tr');
+      const isCurrent = t.id === currentTeacher.id;
+      const isAdmin = t.role === 'Admin';
+
+      tr.innerHTML = `
+        <td>
+          <div class="fw-bold">${t.name} ${isCurrent ? '<span class="badge bg-danger ms-1">You</span>' : ''}</div>
+          <div class="small text-muted">${t.phone || ''}</div>
+        </td>
+        <td><code>${t.username}</code></td>
+        <td>
+          <span class="badge ${isAdmin ? 'bg-danger' : 'bg-primary'}">${t.role}</span>
+        </td>
+        <td>${t.subject || 'Faculty'}</td>
+        <td><code>••••••••</code></td>
+        <td>
+          ${!isCurrent && currentTeacher.role === 'Admin' ? `
+            <button class="btn btn-sm btn-outline-danger delete-teacher-btn" data-id="${t.id}" title="Revoke Access">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          ` : '<span class="text-muted small">Protected</span>'}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('.delete-teacher-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm('Revoke access for this teacher?')) {
+          const res = AlphaAuth.deleteTeacher(btn.dataset.id);
+          if (res.success) {
+            renderTeachersTable();
+            showToast('Teacher access revoked.');
+          } else {
+            showToast(res.message || 'Cannot delete.');
+          }
+        }
+      });
+    });
+  }
+
+  /* ==========================================================================
+     Tab 7: Notice Board & Announcements
+     ========================================================================== */
+  function renderTeacherAnnouncements() {
+    const container = document.getElementById('teacherAnnouncementsList');
+    container.innerHTML = '';
+
+    const announcements = AlphaAuth.getAnnouncements();
+
+    if (announcements.length === 0) {
+      container.innerHTML = '<p class="text-muted py-3 text-center">No announcements posted yet. Click "Post Announcement" to create one.</p>';
+      return;
+    }
+
+    announcements.forEach(ann => {
+      const div = document.createElement('div');
+      div.className = 'announcement-card d-flex justify-content-between align-items-start';
+      div.innerHTML = `
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h6 class="fw-bold mb-0 text-dark">${ann.title}</h6>
+            <span class="badge bg-light text-muted border">${formatDisplayDate(ann.date)}</span>
+          </div>
+          <p class="small text-secondary mb-1">${ann.content}</p>
+          <div class="small text-muted fst-italic">— By ${ann.author}</div>
+        </div>
+        <button class="btn btn-sm btn-outline-danger delete-ann-btn ms-3" data-id="${ann.id}" title="Remove Notice">
+          <i class="bi bi-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    });
+
+    container.querySelectorAll('.delete-ann-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm('Delete this announcement?')) {
+          AlphaAuth.deleteAnnouncement(btn.dataset.id);
+          renderTeacherAnnouncements();
+          showToast('Announcement removed.');
+        }
+      });
+    });
+  }
+
+  /* ==========================================================================
      Dropdown Population (Months, Classes, Students)
      ========================================================================== */
   function populateDropdowns() {
@@ -1077,6 +1183,68 @@
     // Backup & Restore
     document.getElementById('backupDataBtn').addEventListener('click', exportBackup);
     document.getElementById('restoreInput').addEventListener('change', importBackup);
+
+    // Teacher Logout
+    const logoutBtn = document.getElementById('teacherLogoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        AlphaAuth.logoutTeacher();
+        window.location.href = 'index.html';
+      });
+    }
+
+    // Add Teacher Modal & Form
+    const openAddTeacherBtn = document.getElementById('openAddTeacherModalBtn');
+    if (openAddTeacherBtn) {
+      openAddTeacherBtn.addEventListener('click', () => {
+        document.getElementById('teacherForm').reset();
+        new bootstrap.Modal(document.getElementById('teacherModal')).show();
+      });
+    }
+
+    const teacherForm = document.getElementById('teacherForm');
+    if (teacherForm) {
+      teacherForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('teacherNameInput').value.trim();
+        const username = document.getElementById('teacherUsernameInput').value.trim();
+        const pass = document.getElementById('teacherPassInput').value.trim();
+        const role = document.getElementById('teacherRoleSelect').value;
+        const subj = document.getElementById('teacherSubjectInput').value.trim();
+
+        const res = AlphaAuth.addTeacher(name, username, pass, role, subj);
+        if (res.success) {
+          bootstrap.Modal.getInstance(document.getElementById('teacherModal')).hide();
+          renderTeachersTable();
+          showToast(`Teacher account for ${name} created!`);
+        } else {
+          showToast(res.message || 'Error creating account');
+        }
+      });
+    }
+
+    // Add Announcement Modal & Form
+    const openAddAnnBtn = document.getElementById('openAddAnnouncementModalBtn');
+    if (openAddAnnBtn) {
+      openAddAnnBtn.addEventListener('click', () => {
+        document.getElementById('announcementForm').reset();
+        new bootstrap.Modal(document.getElementById('announcementModal')).show();
+      });
+    }
+
+    const annForm = document.getElementById('announcementForm');
+    if (annForm) {
+      annForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('annTitleInput').value.trim();
+        const content = document.getElementById('annContentInput').value.trim();
+
+        AlphaAuth.addAnnouncement(title, content, currentTeacher.name);
+        bootstrap.Modal.getInstance(document.getElementById('announcementModal')).hide();
+        renderTeacherAnnouncements();
+        showToast('Announcement posted to Student Portal! 📢');
+      });
+    }
   }
 
   /* ==========================================================================
@@ -1085,6 +1253,16 @@
   function init() {
     loadData();
     populateDropdowns();
+
+    // Set active teacher info
+    const nameEl = document.getElementById('activeTeacherName');
+    if (nameEl && currentTeacher) {
+      nameEl.textContent = currentTeacher.name;
+    }
+    const subEl = document.getElementById('pageSubtitleText');
+    if (subEl && currentTeacher) {
+      subEl.textContent = `Logged in as: ${currentTeacher.name} (${currentTeacher.role})`;
+    }
 
     // Set today's date in header
     const now = new Date();
@@ -1103,3 +1281,4 @@
   }
 
 })();
+
