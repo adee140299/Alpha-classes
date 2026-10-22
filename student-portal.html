@@ -10,6 +10,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="portal.css">
+  <link rel="icon" type="image/png" href="./images/app-icon-192.png">
+
+  <!-- PWA & Mobile App Meta Tags (iOS & Android) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d3000a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alpha Classes">
+  <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
   <style>
     .student-portal-header {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -86,6 +95,9 @@
         <span id="cloudStatusBadge" class="badge bg-success bg-opacity-10 text-success border border-success d-inline-flex align-items-center gap-1" title="Connected to Google Cloud">
           <i class="bi bi-cloud-check-fill"></i> Cloud Live
         </span>
+        <button type="button" class="btn btn-sm btn-outline-danger fw-bold btn-install-app">
+          <i class="bi bi-phone-fill text-danger me-1"></i> Install App
+        </button>
         <a href="index.html" class="btn btn-sm btn-outline-secondary">
           <i class="bi bi-house me-1"></i> Public Website
         </a>
@@ -338,6 +350,7 @@
   <script src="firebase-config.js"></script>
   <script src="auth.js"></script>
   <script src="student-portal.js"></script>
+  <script src="app-installer.js"></script>
 </body>
 </html>
 

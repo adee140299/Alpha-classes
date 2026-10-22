@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Courses & Batches — Alpha Classes | Class 1st to 12th Science</title>
-  <link rel="icon" type="image/png" href="./images/science.png">
+  <link rel="icon" type="image/png" href="./images/app-icon-192.png">
+
+  <!-- PWA & Mobile App Meta Tags (iOS & Android) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d3000a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alpha Classes">
+  <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
 
   <!-- Fonts & Icons & Bootstrap 5 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,6 +60,10 @@
           </ul>
 
           <div class="navbar-cta-group d-flex align-items-center gap-2">
+            <button type="button" class="app-install-pill btn-install-app" title="Install App on Android & iPhone">
+              <i class="bi bi-phone-fill text-warning"></i>
+              <span>Install App</span>
+            </button>
             <a href="login.html?type=student" class="btn-student-nav" title="Student & Parent Portal">
               <i class="bi bi-mortarboard-fill text-primary"></i>
               <span>Student Portal</span>
@@ -228,5 +240,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app-installer.js"></script>
 </body>
 </html>

@@ -9,6 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" type="image/png" href="./images/app-icon-192.png">
+
+  <!-- PWA & Mobile App Meta Tags (iOS & Android) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d3000a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alpha Classes">
+  <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
   <style>
     :root {
       --primary-red: #d3000a;
@@ -257,6 +266,11 @@
       <a href="index.html" class="back-home-link">
         <i class="bi bi-arrow-left me-1"></i> Back to Public Website
       </a>
+      <div class="text-center mt-3">
+        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1 btn-install-app">
+          <i class="bi bi-phone-fill text-warning me-1"></i> Install Mobile App
+        </button>
+      </div>
     </div>
   </div>
 
@@ -349,6 +363,7 @@
       }
     });
   </script>
+  <script src="app-installer.js"></script>
 </body>
 </html>
 
