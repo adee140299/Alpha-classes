@@ -76,6 +76,10 @@
     } catch (e) {
       console.error('Failed to write storage', e);
     }
+    // Also push updates to Google Cloud if available
+    if (typeof window.AlphaFirebase !== 'undefined' && window.AlphaFirebase.isCloudReady()) {
+      window.AlphaFirebase.saveToCloud(fullData, 'AuthManager');
+    }
   }
 
   // Ensure default teachers, students, and announcements exist in storage
@@ -101,6 +105,15 @@
   }
 
   initAuthData();
+
+  // Listen for real-time cloud updates
+  if (typeof window !== 'undefined') {
+    window.addEventListener('alpha-cloud-data', function (e) {
+      if (e.detail) {
+        initAuthData();
+      }
+    });
+  }
 
   // Authentication API
   const AlphaAuth = {

@@ -111,11 +111,15 @@
 
   function saveData() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      const full = {
         students: state.students,
         attendance: state.attendance,
         fees: state.fees
-      }));
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(full));
+      if (typeof window.AlphaFirebase !== 'undefined' && window.AlphaFirebase.isCloudReady()) {
+        window.AlphaFirebase.saveToCloud(full, currentTeacher ? currentTeacher.name : 'Teacher');
+      }
     } catch (e) {
       console.error('Failed to save portal data', e);
     }
@@ -1272,6 +1276,30 @@
 
     setupEventListeners();
     switchTab('dashboard');
+
+    // Initialize Real-time Google Firebase Cloud Sync
+    if (typeof window.AlphaFirebase !== 'undefined') {
+      window.AlphaFirebase.initSync(function (cloudData, source) {
+        if (cloudData) {
+          if (cloudData.students && Array.isArray(cloudData.students) && cloudData.students.length > 0) {
+            state.students = cloudData.students;
+          }
+          if (cloudData.attendance) {
+            state.attendance = cloudData.attendance;
+          }
+          if (cloudData.fees) {
+            state.fees = cloudData.fees;
+          }
+          updateKPIs();
+          if (state.activeTab === 'attendance') renderDailyAttendanceTable();
+          if (state.activeTab === 'monthly-register') renderMonthlyRegister();
+          if (state.activeTab === 'fees') renderFeeTable();
+          if (state.activeTab === 'students') renderStudentsTable();
+          if (state.activeTab === 'teachers') renderTeachersTable();
+          if (state.activeTab === 'announcements') renderTeacherAnnouncements();
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

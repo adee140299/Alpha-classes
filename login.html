@@ -192,6 +192,11 @@
         <div class="brand-badge">α</div>
         <h2>ALPHA CLASSES</h2>
         <p>Specialized Coaching & Classroom Portal</p>
+        <div class="mt-2">
+          <span id="cloudStatusBadge" class="badge bg-success bg-opacity-25 text-white border border-success small" style="font-size: 0.72rem;">
+            <i class="bi bi-cloud-check-fill text-success"></i> Google Cloud Live
+          </span>
+        </div>
       </div>
 
       <!-- Tab Switcher -->
@@ -255,8 +260,16 @@
     </div>
   </div>
 
+  <!-- Google Firebase SDKs (Cloud Database & Realtime Sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="auth.js"></script>
   <script>
+    // Initialize cloud sync so students/teachers from cloud are ready on any new device
+    if (typeof window.AlphaFirebase !== 'undefined') {
+      window.AlphaFirebase.initSync();
+    }
     const tabTeacherBtn = document.getElementById('tabTeacherBtn');
     const tabStudentBtn = document.getElementById('tabStudentBtn');
     const teacherLoginForm = document.getElementById('teacherLoginForm');
@@ -338,3 +351,4 @@
   </script>
 </body>
 </html>
+

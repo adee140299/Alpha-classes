@@ -103,6 +103,9 @@
         </div>
 
         <div class="topbar-actions">
+          <span id="cloudStatusBadge" class="badge bg-success bg-opacity-10 text-success border border-success d-inline-flex align-items-center gap-1" title="Real-time sync active with Google Cloud">
+            <i class="bi bi-cloud-check-fill"></i> Google Cloud Live
+          </span>
           <div class="date-pill">
             <i class="bi bi-clock-history text-danger"></i>
             <span id="currentDateDisplay">Loading date...</span>
@@ -821,6 +824,10 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Firebase SDKs (Cloud Database & Realtime Sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="auth.js"></script>
   <script src="portal.js"></script>
 </body>

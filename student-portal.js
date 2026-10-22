@@ -61,6 +61,29 @@
       AlphaAuth.logoutStudent();
       window.location.href = 'index.html';
     });
+
+    // 7. Real-time Google Cloud Sync
+    if (typeof window.AlphaFirebase !== 'undefined') {
+      window.AlphaFirebase.initSync(function (cloudData) {
+        if (cloudData) {
+          // Check if current student data was updated
+          if (cloudData.students && Array.isArray(cloudData.students)) {
+            const updated = cloudData.students.find(s => s.id === student.id || s.roll === student.roll);
+            if (updated) {
+              Object.assign(student, updated);
+              document.getElementById('stName').textContent = student.name;
+              document.getElementById('stMeta').textContent = `${student.grade} • ${student.batch} Batch`;
+              document.getElementById('stParent').textContent = student.parentName || 'Parent / Guardian';
+              document.getElementById('stPhone').textContent = student.phone || '—';
+            }
+          }
+          // Re-render live attendance, fees, and announcements
+          renderStudentAttendance();
+          renderStudentFees();
+          renderStudentAnnouncements();
+        }
+      });
+    }
   }
 
   function renderStudentAttendance() {
@@ -272,3 +295,4 @@
   document.addEventListener('DOMContentLoaded', initStudentPortal);
 
 })();
+

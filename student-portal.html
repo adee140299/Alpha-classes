@@ -82,7 +82,10 @@
           <span class="small text-muted fw-bold">Student & Parent Portal</span>
         </div>
       </div>
-      <div class="d-flex gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <span id="cloudStatusBadge" class="badge bg-success bg-opacity-10 text-success border border-success d-inline-flex align-items-center gap-1" title="Connected to Google Cloud">
+          <i class="bi bi-cloud-check-fill"></i> Cloud Live
+        </span>
         <a href="index.html" class="btn btn-sm btn-outline-secondary">
           <i class="bi bi-house me-1"></i> Public Website
         </a>
@@ -329,7 +332,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Firebase Cloud SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="auth.js"></script>
   <script src="student-portal.js"></script>
 </body>
 </html>
+
