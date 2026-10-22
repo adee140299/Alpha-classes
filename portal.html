@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Classes — Teacher & Management Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body class="portal-body">
+
+  <div class="portal-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">α</div>
+        <div class="brand-text">
+          <h2>ALPHA CLASSES</h2>
+          <span>Teacher Portal</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-heading">Main</span>
+        <a class="portal-nav-link active" data-tab="dashboard">
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <span class="nav-heading">Classroom</span>
+        <a class="portal-nav-link" data-tab="attendance">
+          <i class="bi bi-calendar-check-fill"></i>
+          <span>Take Attendance</span>
+        </a>
+        <a class="portal-nav-link" data-tab="monthly-register">
+          <i class="bi bi-calendar3-range-fill"></i>
+          <span>Monthly Register</span>
+        </a>
+
+        <span class="nav-heading">Finance & Admin</span>
+        <a class="portal-nav-link" data-tab="fees">
+          <i class="bi bi-cash-stack"></i>
+          <span>Manage Fees</span>
+        </a>
+        <a class="portal-nav-link" data-tab="students">
+          <i class="bi bi-people-fill"></i>
+          <span>Students Directory</span>
+        </a>
+
+        <span class="nav-heading">System</span>
+        <a class="portal-nav-link" id="backupDataBtn">
+          <i class="bi bi-cloud-arrow-down-fill"></i>
+          <span>Export Backup</span>
+        </a>
+        <label class="portal-nav-link" style="margin: 0; cursor: pointer;">
+          <i class="bi bi-cloud-arrow-up-fill"></i>
+          <span>Restore Backup</span>
+          <input type="file" id="restoreInput" accept=".json" style="display:none;">
+        </label>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="btn-back-website">
+          <i class="bi bi-arrow-left"></i>
+          <span>Public Website</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="portal-main">
+      <!-- Topbar Header -->
+      <header class="portal-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Navigation">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-title-badge">
+            <h1 id="pageTitleText">Classroom Dashboard</h1>
+            <p id="pageSubtitleText">Welcome, Instructor Pradeep Yadav</p>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="date-pill">
+            <i class="bi bi-clock-history text-danger"></i>
+            <span id="currentDateDisplay">Loading date...</span>
+          </div>
+          <button class="btn btn-sm btn-outline-danger" id="quickAddStudentBtn">
+            <i class="bi bi-person-plus-fill me-1"></i> Add Student
+          </button>
+          <button class="btn btn-sm btn-danger" id="quickAttendanceBtn">
+            <i class="bi bi-check2-circle me-1"></i> Today's Attendance
+          </button>
+        </div>
+      </header>
+
+      <!-- ======================================================================
+           TAB 1: DASHBOARD OVERVIEW
+           ====================================================================== -->
+      <section id="tab-dashboard" class="portal-tab-content active">
+        <!-- KPI Metric Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon students-icon"><i class="bi bi-people"></i></div>
+            <div class="kpi-info">
+              <h3>Active Students</h3>
+              <div class="kpi-value" id="kpiTotalStudents">0</div>
+              <div class="kpi-sub" id="kpiClassesBreakdown">Across all grades</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon attendance-icon"><i class="bi bi-calendar2-check"></i></div>
+            <div class="kpi-info">
+              <h3>Today's Attendance</h3>
+              <div class="kpi-value" id="kpiAttendanceRate">0%</div>
+              <div class="kpi-sub" id="kpiAttendanceSummary">0 / 0 Present</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon collected-icon"><i class="bi bi-wallet2"></i></div>
+            <div class="kpi-info">
+              <h3>Fees Collected</h3>
+              <div class="kpi-value" id="kpiCollectedFees">₹0</div>
+              <div class="kpi-sub" id="kpiCurrentMonthName">This month</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon pending-icon"><i class="bi bi-exclamation-circle"></i></div>
+            <div class="kpi-info">
+              <h3>Pending Fees Dues</h3>
+              <div class="kpi-value text-danger" id="kpiPendingFees">₹0</div>
+              <div class="kpi-sub" id="kpiDefaultersCount">0 pending accounts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Today's Absentees Widget -->
+          <div class="col-lg-6">
+            <div class="portal-card h-100">
+              <div class="portal-card-header">
+                <h2><i class="bi bi-person-x-fill text-danger"></i> Today's Absentees</h2>
+                <span class="badge bg-danger" id="todayAbsentBadge">0 Absent</span>
+              </div>
+              <div class="portal-card-body p-0">
+                <div class="table-responsive">
+                  <table class="portal-table">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Class</th>
+                        <th>Parent Contact</th>
+                        <th>Notify Parent</th>
+                      </tr>
+                    </thead>
+                    <tbody id="todayAbsenteesList">
+                      <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No absentees marked today! 🎉</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Fees Defaulters Widget -->
+          <div class="col-lg-6">
+            <div class="portal-card h-100">
+              <div class="portal-card-header">
+                <h2><i class="bi bi-currency-rupee text-warning"></i> Pending Fee Dues</h2>
+                <button class="btn btn-sm btn-outline-secondary" id="viewAllFeesBtn">View All</button>
+              </div>
+              <div class="portal-card-body p-0">
+                <div class="table-responsive">
+                  <table class="portal-table">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Class</th>
+                        <th>Due Amount</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboardFeeDueList">
+                      <tr>
+                        <td colspan="4" class="text-center text-muted py-4">All accounts are up to date! 👏</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           TAB 2: DAILY ATTENDANCE
+           ====================================================================== -->
+      <section id="tab-attendance" class="portal-tab-content d-none">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-calendar-check-fill text-danger"></i> Daily Attendance Tracker</h2>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-success" id="markAllPresentBtn">
+                <i class="bi bi-check-all"></i> Mark All Present
+              </button>
+              <button class="btn btn-sm btn-outline-danger" id="markAllAbsentBtn">
+                <i class="bi bi-x"></i> Mark All Absent
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" id="printAttendanceBtn">
+                <i class="bi bi-printer"></i> Print Sheet
+              </button>
+            </div>
+          </div>
+
+          <div class="portal-card-body">
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-group">
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Date</label>
+                  <input type="date" id="attendanceDateInput" class="form-control form-control-sm">
+                </div>
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Class / Grade</label>
+                  <select id="attendanceClassFilter" class="form-select form-select-sm">
+                    <option value="all">All Classes</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Batch Timing</label>
+                  <select id="attendanceBatchFilter" class="form-select form-select-sm">
+                    <option value="all">All Batches</option>
+                    <option value="Morning">Morning Batch</option>
+                    <option value="Afternoon">Afternoon Batch</option>
+                    <option value="Evening">Evening Batch</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="search-input-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="attendanceSearchInput" class="form-control form-control-sm" placeholder="Search student name or roll...">
+              </div>
+            </div>
+
+            <!-- Attendance Stats Summary Bar -->
+            <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-3 border">
+              <div>
+                <span class="fw-bold me-3 text-dark">Date: <span id="attDisplayDate">Today</span></span>
+                <span class="badge bg-success me-2" id="statPresentCount">0 Present</span>
+                <span class="badge bg-danger me-2" id="statAbsentCount">0 Absent</span>
+                <span class="badge bg-warning text-dark me-2" id="statLateCount">0 Late</span>
+                <span class="badge bg-primary" id="statExcusedCount">0 Excused</span>
+              </div>
+              <div class="fw-bold text-muted small">
+                Attendance Rate: <span class="text-danger fw-extrabold" id="statAttendancePercent">0%</span>
+              </div>
+            </div>
+
+            <!-- Attendance Roster Table -->
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Roll / ID</th>
+                    <th>Student Name</th>
+                    <th>Class & Batch</th>
+                    <th>Attendance Status</th>
+                    <th>Notify Parent</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceRosterBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           TAB 3: MONTHLY ATTENDANCE REGISTER
+           ====================================================================== -->
+      <section id="tab-monthly-register" class="portal-tab-content d-none">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-calendar3-range-fill text-danger"></i> Monthly Attendance Register</h2>
+            <div class="d-flex gap-2 align-items-center">
+              <select id="registerMonthSelect" class="form-select form-select-sm" style="width: 140px;"></select>
+              <select id="registerYearSelect" class="form-select form-select-sm" style="width: 100px;"></select>
+              <select id="registerClassFilter" class="form-select form-select-sm" style="width: 140px;">
+                <option value="all">All Classes</option>
+              </select>
+              <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print Register
+              </button>
+            </div>
+          </div>
+          <div class="portal-card-body p-0">
+            <div class="table-responsive" style="max-height: 600px; overflow-x: auto;">
+              <table class="portal-table table-bordered text-center" id="monthlyRegisterTable">
+                <!-- Populated by JS -->
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           TAB 4: MANAGE FEES
+           ====================================================================== -->
+      <section id="tab-fees" class="portal-tab-content d-none">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-cash-stack text-danger"></i> Student Fees & Receipts</h2>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-danger" id="openAddPaymentModalBtn">
+                <i class="bi bi-plus-circle-fill"></i> Record Payment
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" id="printFeeReportBtn">
+                <i class="bi bi-printer"></i> Print Dues Report
+              </button>
+            </div>
+          </div>
+
+          <div class="portal-card-body">
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-group">
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Billing Month</label>
+                  <select id="feeMonthFilter" class="form-select form-select-sm"></select>
+                </div>
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Class / Grade</label>
+                  <select id="feeClassFilter" class="form-select form-select-sm">
+                    <option value="all">All Classes</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label mb-1 text-muted small fw-bold">Payment Status</label>
+                  <select id="feeStatusFilter" class="form-select form-select-sm">
+                    <option value="all">All Statuses</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending / Unpaid</option>
+                    <option value="Partial">Partial</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="search-input-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="feeSearchInput" class="form-control form-control-sm" placeholder="Search student name...">
+              </div>
+            </div>
+
+            <!-- Fees Ledger Table -->
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Monthly Fee</th>
+                    <th>Amount Paid</th>
+                    <th>Balance Due</th>
+                    <th>Status</th>
+                    <th>Payment Details</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="feesTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           TAB 5: STUDENTS DIRECTORY
+           ====================================================================== -->
+      <section id="tab-students" class="portal-tab-content d-none">
+        <div class="portal-card">
+          <div class="portal-card-header">
+            <h2><i class="bi bi-people-fill text-danger"></i> Student Roster & Profiles</h2>
+            <button class="btn btn-sm btn-danger" id="addNewStudentBtn">
+              <i class="bi bi-person-plus-fill"></i> Add New Student
+            </button>
+          </div>
+
+          <div class="portal-card-body">
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-group">
+                <select id="studentsClassFilter" class="form-select form-select-sm" style="min-width: 150px;">
+                  <option value="all">All Classes</option>
+                </select>
+                <select id="studentsBatchFilter" class="form-select form-select-sm">
+                  <option value="all">All Batches</option>
+                  <option value="Morning">Morning</option>
+                  <option value="Afternoon">Afternoon</option>
+                  <option value="Evening">Evening</option>
+                </select>
+              </div>
+
+              <div class="search-input-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="studentsSearchInput" class="form-control form-control-sm" placeholder="Search by name, roll, phone...">
+              </div>
+            </div>
+
+            <!-- Student Table -->
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Roll / ID</th>
+                    <th>Student</th>
+                    <th>Grade / Class</th>
+                    <th>Batch</th>
+                    <th>Parent / Contact</th>
+                    <th>Monthly Fee</th>
+                    <th>Join Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 1: ADD / EDIT STUDENT
+       ====================================================================== -->
+  <div class="modal fade" id="studentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="studentModalTitle">Add New Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="studentForm">
+          <div class="modal-body">
+            <input type="hidden" id="studentEditId">
+            <div class="row g-3">
+              <div class="col-md-7">
+                <label class="form-label small fw-bold">Full Name *</label>
+                <input type="text" id="studentNameInput" class="form-control" required placeholder="e.g. Aryan Sharma">
+              </div>
+              <div class="col-md-5">
+                <label class="form-label small fw-bold">Roll / Student ID *</label>
+                <input type="text" id="studentRollInput" class="form-control" required placeholder="e.g. AC-101">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">Class / Grade *</label>
+                <select id="studentClassInput" class="form-select" required>
+                  <option value="Class 1">Class 1</option>
+                  <option value="Class 2">Class 2</option>
+                  <option value="Class 3">Class 3</option>
+                  <option value="Class 4">Class 4</option>
+                  <option value="Class 5">Class 5</option>
+                  <option value="Class 6">Class 6</option>
+                  <option value="Class 7">Class 7</option>
+                  <option value="Class 8">Class 8</option>
+                  <option value="Class 9">Class 9</option>
+                  <option value="Class 10 (SSC Board)" selected>Class 10 (SSC Board)</option>
+                  <option value="11th Science">11th Science</option>
+                  <option value="12th Science (HSC Board)">12th Science (HSC Board)</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">Batch Timing</label>
+                <select id="studentBatchInput" class="form-select">
+                  <option value="Morning">Morning (8:00 AM - 10:30 AM)</option>
+                  <option value="Afternoon">Afternoon (2:00 PM - 4:30 PM)</option>
+                  <option value="Evening" selected>Evening (5:30 PM - 8:00 PM)</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">Parent / Guardian Name</label>
+                <input type="text" id="studentParentInput" class="form-control" placeholder="e.g. Rajesh Sharma">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">WhatsApp / Phone *</label>
+                <input type="tel" id="studentPhoneInput" class="form-control" required placeholder="e.g. 9821016457">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">Monthly Fee (₹) *</label>
+                <input type="number" id="studentFeeInput" class="form-control" required min="0" placeholder="e.g. 2500">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">Admission Date</label>
+                <input type="date" id="studentJoinDateInput" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Save Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: RECORD FEE PAYMENT
+       ====================================================================== -->
+  <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Record Fee Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="paymentForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Select Student *</label>
+              <select id="paymentStudentSelect" class="form-select" required></select>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label small fw-bold">For Month *</label>
+                <select id="paymentMonthSelect" class="form-select" required></select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small fw-bold">Payment Date *</label>
+                <input type="date" id="paymentDateInput" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label small fw-bold">Amount Paid (₹) *</label>
+                <input type="number" id="paymentAmountInput" class="form-control" min="1" required placeholder="Amount">
+              </div>
+              <div class="col-6">
+                <label class="form-label small fw-bold">Payment Mode *</label>
+                <select id="paymentModeSelect" class="form-select" required>
+                  <option value="Cash">Cash</option>
+                  <option value="UPI / GPay / PhonePe">UPI / GPay / PhonePe</option>
+                  <option value="Bank Transfer">Bank Transfer / NEFT</option>
+                  <option value="Cheque">Cheque</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Remarks / Transaction Ref</label>
+              <input type="text" id="paymentRemarksInput" class="form-control" placeholder="e.g. UPI Ref #12345 or Cash paid by Mother">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Record Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 3: PRINTABLE FEE RECEIPT
+       ====================================================================== -->
+  <div class="modal fade" id="receiptModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header no-print">
+          <h5 class="modal-title fw-bold">Official Fee Receipt</h5>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-danger btn-sm" onclick="window.print()">
+              <i class="bi bi-printer"></i> Print Receipt
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-4">
+          <div class="receipt-paper" id="receiptPaper">
+            <div class="receipt-header">
+              <h2>ALPHA CLASSES</h2>
+              <p>Specialized Coaching for Class 1 to 12 & Science Stream (English & Semi-English)</p>
+              <p>Morarji Nagar, Prince Collection, Aarey Road, Nitie, Mumbai - 400 087 • Phone: +91 9821016457</p>
+              <span class="receipt-title-badge">FEE RECEIPT</span>
+            </div>
+
+            <div class="receipt-meta-grid">
+              <div><strong>Receipt No:</strong> <span id="recNo">AC-REC-001</span></div>
+              <div class="text-end"><strong>Date:</strong> <span id="recDate">-</span></div>
+              <div><strong>Student Name:</strong> <span id="recStudentName">-</span></div>
+              <div class="text-end"><strong>Roll No:</strong> <span id="recRollNo">-</span></div>
+              <div><strong>Class / Grade:</strong> <span id="recClass">-</span></div>
+              <div class="text-end"><strong>Billing Month:</strong> <span id="recMonth">-</span></div>
+            </div>
+
+            <table class="receipt-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Total Monthly Fee</th>
+                  <th>Amount Paid</th>
+                  <th>Balance Due</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Monthly Tuition Coaching Fee</td>
+                  <td id="recTotalFee">₹0</td>
+                  <td id="recAmountPaid" class="fw-bold text-success">₹0</td>
+                  <td id="recBalanceDue" class="fw-bold text-danger">₹0</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="row mb-3">
+              <div class="col-8">
+                <p class="mb-1 small"><strong>Payment Mode:</strong> <span id="recPaymentMode">Cash</span></p>
+                <p class="mb-0 small text-muted"><strong>Remarks:</strong> <span id="recRemarks">Fee received with thanks</span></p>
+              </div>
+              <div class="col-4 text-end">
+                <h5 class="fw-bold text-danger mb-0">PAID: <span id="recPaidBadge">₹0</span></h5>
+              </div>
+            </div>
+
+            <div class="receipt-signatures">
+              <div class="signature-line">Parent / Student Signature</div>
+              <div class="signature-line">Authorized Signatory (Alpha Classes)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="portalToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">Action completed successfully!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>
