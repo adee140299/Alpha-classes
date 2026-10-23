@@ -15,17 +15,7 @@
 
   const STORAGE_KEY = 'alpha_classes_data_v1';
 
-  // Seed demo data so the teacher can test immediately
-  const DEMO_STUDENTS = [
-    { id: '101', roll: 'AC-101', name: 'Aryan Sharma', grade: 'Class 10 (SSC Board)', batch: 'Evening', parentName: 'Rajesh Sharma', phone: '9821016457', monthlyFee: 2500, joinDate: '2026-06-15', active: true },
-    { id: '102', roll: 'AC-102', name: 'Sneha Patil', grade: 'Class 10 (SSC Board)', batch: 'Evening', parentName: 'Sunil Patil', phone: '9821016457', monthlyFee: 2500, joinDate: '2026-06-16', active: true },
-    { id: '103', roll: 'AC-103', name: 'Rohan Gupta', grade: '11th Science', batch: 'Morning', parentName: 'Manoj Gupta', phone: '9821016457', monthlyFee: 3500, joinDate: '2026-07-01', active: true },
-    { id: '104', roll: 'AC-104', name: 'Pooja Verma', grade: '12th Science (HSC Board)', batch: 'Morning', parentName: 'Anil Verma', phone: '9821016457', monthlyFee: 4000, joinDate: '2026-05-10', active: true },
-    { id: '105', roll: 'AC-105', name: 'Aditya Deshmukh', grade: 'Class 9', batch: 'Evening', parentName: 'Ganesh Deshmukh', phone: '9821016457', monthlyFee: 2200, joinDate: '2026-06-20', active: true },
-    { id: '106', roll: 'AC-106', name: 'Neha Khan', grade: 'Class 9', batch: 'Evening', parentName: 'Imran Khan', phone: '9821016457', monthlyFee: 2200, joinDate: '2026-06-21', active: true },
-    { id: '107', roll: 'AC-107', name: 'Tanmay Joshi', grade: 'Class 8', batch: 'Afternoon', parentName: 'Sanjay Joshi', phone: '9821016457', monthlyFee: 1800, joinDate: '2026-07-10', active: true },
-    { id: '108', roll: 'AC-108', name: 'Ananya Yadav', grade: '12th Science (HSC Board)', batch: 'Morning', parentName: 'Dharmendra Yadav', phone: '9821016457', monthlyFee: 4000, joinDate: '2026-05-15', active: true }
-  ];
+  const DEMO_STUDENTS = [];
 
   const ALL_CLASSES = [
     'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
@@ -78,7 +68,9 @@
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        state.students = Array.isArray(parsed.students) ? parsed.students : [];
+        const rawStudents = Array.isArray(parsed.students) ? parsed.students : [];
+        const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+        state.students = rawStudents.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
         state.attendance = parsed.attendance || {};
         state.fees = parsed.fees || {};
         return;
@@ -801,50 +793,7 @@
     }
   }
 
-  const DEMO_STUDENT_IDS = ['101', '102', '103', '104', '105', '106', '107', '108'];
 
-  function clearAllDemoStudents() {
-    const demoFound = state.students.some(s => DEMO_STUDENT_IDS.includes(String(s.id)) || String(s.roll).startsWith('AC-10'));
-
-    let confirmMsg = '';
-    if (demoFound) {
-      confirmMsg = 'Are you sure you want to delete all demo/dummy students? Any real students you added will remain safe.';
-    } else if (state.students.length > 0) {
-      confirmMsg = 'Are you sure you want to delete all students from the directory?';
-    } else {
-      showToast('Student directory is already empty. You can enroll your real students anytime!');
-      return;
-    }
-
-    if (!confirm(confirmMsg)) return;
-
-    if (demoFound) {
-      // Filter out demo students, preserve any user-created real students
-      state.students = state.students.filter(s => !DEMO_STUDENT_IDS.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
-      DEMO_STUDENT_IDS.forEach(id => {
-        if (state.attendance) {
-          Object.keys(state.attendance).forEach(dateKey => {
-            if (state.attendance[dateKey]) delete state.attendance[dateKey][id];
-          });
-        }
-        if (state.fees) {
-          Object.keys(state.fees).forEach(monthKey => {
-            if (state.fees[monthKey]) delete state.fees[monthKey][id];
-          });
-        }
-      });
-    } else {
-      state.students = [];
-      state.attendance = {};
-      state.fees = {};
-    }
-
-    saveData();
-    renderStudentsTable();
-    populateDropdowns();
-    updateKPIs();
-    showToast('Demo students cleared successfully! 🗑️');
-  }
 
   /* ==========================================================================
      Tab 6: Staff & Teachers Access Management
@@ -1112,7 +1061,10 @@
         if (typeof window.AlphaFirebase !== 'undefined') {
           window.AlphaFirebase.fetchLatestCloudData().then(cloudData => {
             if (cloudData) {
-              if (Array.isArray(cloudData.students)) state.students = cloudData.students;
+              if (Array.isArray(cloudData.students)) {
+                const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+                state.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+              }
               if (cloudData.attendance) state.attendance = cloudData.attendance;
               if (cloudData.fees) state.fees = cloudData.fees;
               updateKPIs();
@@ -1132,10 +1084,7 @@
       switchTab('fees');
     });
 
-    const clearDemoBtn = document.getElementById('clearDemoStudentsBtn');
-    if (clearDemoBtn) {
-      clearDemoBtn.addEventListener('click', clearAllDemoStudents);
-    }
+
 
     document.getElementById('addNewStudentBtn').addEventListener('click', () => {
       document.getElementById('studentModalTitle').textContent = 'Add New Student';
@@ -1391,7 +1340,8 @@
       window.AlphaFirebase.initSync(function (cloudData, source) {
         if (cloudData) {
           if (Array.isArray(cloudData.students)) {
-            state.students = cloudData.students;
+            const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+            state.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
           }
           if (cloudData.attendance) {
             state.attendance = cloudData.attendance;

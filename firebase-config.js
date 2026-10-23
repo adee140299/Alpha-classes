@@ -108,6 +108,21 @@
             return;
           }
           const cloudData = doc.data();
+
+          // Prevent stale cloud echoes from overwriting newer local actions
+          const local = getLocalData() || {};
+          if (local.lastUpdated && cloudData.lastUpdated) {
+            if (new Date(local.lastUpdated).getTime() > new Date(cloudData.lastUpdated).getTime()) {
+              return;
+            }
+          }
+
+          // Strip any residual demo student IDs from incoming cloud sync
+          if (Array.isArray(cloudData.students)) {
+            const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+            cloudData.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+          }
+
           // Update local cache so offline works seamlessly
           setLocalData(cloudData);
           this.broadcastCloudStatus(true);
@@ -182,6 +197,10 @@
       return DOC_REF.get({ source: 'server' }).then(doc => {
         if (doc.exists) {
           const cloudData = doc.data();
+          if (Array.isArray(cloudData.students)) {
+            const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+            cloudData.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+          }
           setLocalData(cloudData);
           this.broadcastCloudStatus(true);
           window.dispatchEvent(new CustomEvent('alpha-cloud-data', { detail: cloudData }));

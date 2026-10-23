@@ -10,16 +10,7 @@
   const AUTH_TEACHER_KEY = 'alpha_current_teacher_session';
   const AUTH_STUDENT_KEY = 'alpha_current_student_session';
 
-  const DEFAULT_STUDENTS = [
-    { id: '101', roll: 'AC-101', name: 'Aryan Sharma', grade: 'Class 10 (SSC Board)', batch: 'Evening', parentName: 'Rajesh Sharma', phone: '9821016457', monthlyFee: 2500, joinDate: '2026-06-15', active: true },
-    { id: '102', roll: 'AC-102', name: 'Sneha Patil', grade: 'Class 10 (SSC Board)', batch: 'Evening', parentName: 'Sunil Patil', phone: '9821016457', monthlyFee: 2500, joinDate: '2026-06-16', active: true },
-    { id: '103', roll: 'AC-103', name: 'Rohan Gupta', grade: '11th Science', batch: 'Morning', parentName: 'Manoj Gupta', phone: '9821016457', monthlyFee: 3500, joinDate: '2026-07-01', active: true },
-    { id: '104', roll: 'AC-104', name: 'Pooja Verma', grade: '12th Science (HSC Board)', batch: 'Morning', parentName: 'Anil Verma', phone: '9821016457', monthlyFee: 4000, joinDate: '2026-05-10', active: true },
-    { id: '105', roll: 'AC-105', name: 'Aditya Deshmukh', grade: 'Class 9', batch: 'Evening', parentName: 'Ganesh Deshmukh', phone: '9821016457', monthlyFee: 2200, joinDate: '2026-06-20', active: true },
-    { id: '106', roll: 'AC-106', name: 'Neha Khan', grade: 'Class 9', batch: 'Evening', parentName: 'Imran Khan', phone: '9821016457', monthlyFee: 2200, joinDate: '2026-06-21', active: true },
-    { id: '107', roll: 'AC-107', name: 'Tanmay Joshi', grade: 'Class 8', batch: 'Afternoon', parentName: 'Sanjay Joshi', phone: '9821016457', monthlyFee: 1800, joinDate: '2026-07-10', active: true },
-    { id: '108', roll: 'AC-108', name: 'Ananya Yadav', grade: '12th Science (HSC Board)', batch: 'Morning', parentName: 'Dharmendra Yadav', phone: '9821016457', monthlyFee: 4000, joinDate: '2026-05-15', active: true }
-  ];
+  const DEFAULT_STUDENTS = [];
 
   // Default Master Admin & Teachers
   const DEFAULT_TEACHERS = [
@@ -88,8 +79,24 @@
     const data = getStorageData();
     let updated = false;
 
+    // Purge any residual demo students if present in local storage
+    if (Array.isArray(data.students)) {
+      const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
+      const filtered = data.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+      if (filtered.length !== data.students.length) {
+        data.students = filtered;
+        updated = true;
+      }
+    } else {
+      data.students = [];
+      updated = true;
+    }
+
     // If initialized flag is set, NEVER overwrite user's deleted students or teachers!
     if (data.initialized === true) {
+      if (updated) {
+        saveStorageData(data);
+      }
       return;
     }
 
@@ -99,11 +106,6 @@
     }
     if (!data.announcements || !Array.isArray(data.announcements)) {
       data.announcements = DEFAULT_ANNOUNCEMENTS;
-      updated = true;
-    }
-    // Students list: Ensure array exists, but NEVER force dummy students when empty!
-    if (!Array.isArray(data.students)) {
-      data.students = [];
       updated = true;
     }
 
