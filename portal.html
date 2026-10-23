@@ -488,9 +488,14 @@
               <h2><i class="bi bi-shield-lock-fill text-danger"></i> Staff & Teacher Accounts</h2>
               <p class="small text-muted mb-0">Grant access to teachers and assistants so they can take attendance and manage their classes.</p>
             </div>
-            <button class="btn btn-sm btn-danger" id="openAddTeacherModalBtn">
-              <i class="bi bi-person-plus-fill"></i> Add New Teacher / Staff
-            </button>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-danger" id="openChangePasswordModalBtn">
+                <i class="bi bi-key-fill"></i> Change My Password
+              </button>
+              <button class="btn btn-sm btn-danger" id="openAddTeacherModalBtn">
+                <i class="bi bi-person-plus-fill"></i> Add New Teacher / Staff
+              </button>
+            </div>
           </div>
           <div class="portal-card-body p-0">
             <div class="table-responsive">
@@ -789,6 +794,41 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-danger">Create Teacher Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 4B: CHANGE MY PASSWORD
+       ====================================================================== -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold"><i class="bi bi-key-fill text-danger me-2"></i>Change My Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="changePasswordForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Current Account</label>
+              <input type="text" id="changePassUserDisplay" class="form-control bg-light" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold">New Secret Password *</label>
+              <input type="password" id="newPasswordInput" class="form-control" required placeholder="Enter new secret password" minlength="4">
+              <div class="form-text small">Save this password. You will use it to log in next time.</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Confirm New Password *</label>
+              <input type="password" id="confirmNewPasswordInput" class="form-control" required placeholder="Confirm new password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Update & Save Password</button>
           </div>
         </form>
       </div>

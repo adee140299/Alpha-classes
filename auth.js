@@ -176,6 +176,16 @@
       return { success: true };
     },
 
+    updateTeacherPassword(username, newPassword) {
+      const data = getStorageData();
+      if (!data.teachers) return { success: false, message: 'No teachers found' };
+      const teacher = data.teachers.find(t => t.username.toLowerCase() === username.toLowerCase().trim());
+      if (!teacher) return { success: false, message: 'Teacher account not found' };
+      teacher.password = newPassword.trim();
+      saveStorageData(data);
+      return { success: true };
+    },
+
     loginTeacher(username, password) {
       initAuthData();
       const teachers = this.getTeachers();

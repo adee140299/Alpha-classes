@@ -148,26 +148,6 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
     }
-    .demo-pill-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-      color: #cbd5e1;
-      padding: 6px 12px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 14px;
-      transition: all 0.15s ease;
-    }
-    .demo-pill-btn:hover {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: #ef4444;
-      color: #ef4444;
-    }
     .back-home-link {
       display: block;
       text-align: center;
@@ -236,11 +216,6 @@
         <button type="submit" class="btn-submit">
           <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Teacher Portal
         </button>
-        <div class="text-center">
-          <button type="button" class="demo-pill-btn" id="fillTeacherDemoBtn">
-            <i class="bi bi-key-fill text-warning"></i> Auto-fill Teacher Demo (admin / admin123)
-          </button>
-        </div>
       </form>
 
       <!-- Form 2: Student Portal Login -->
@@ -256,11 +231,6 @@
         <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">
           <i class="bi bi-mortarboard-fill me-1"></i> Sign In as Student / Parent
         </button>
-        <div class="text-center">
-          <button type="button" class="demo-pill-btn" id="fillStudentDemoBtn">
-            <i class="bi bi-person-check-fill text-info"></i> Auto-fill Student Demo (AC-101 / 9821016457)
-          </button>
-        </div>
       </form>
 
       <a href="index.html" class="back-home-link">
@@ -313,19 +283,6 @@
       tabTeacherBtn.classList.remove('active');
       studentLoginForm.style.display = 'block';
       teacherLoginForm.style.display = 'none';
-      hideError();
-    });
-
-    // Auto-fill Demos
-    document.getElementById('fillTeacherDemoBtn').addEventListener('click', () => {
-      document.getElementById('teacherUsernameInput').value = 'admin';
-      document.getElementById('teacherPasswordInput').value = 'admin123';
-      hideError();
-    });
-
-    document.getElementById('fillStudentDemoBtn').addEventListener('click', () => {
-      document.getElementById('studentRollInput').value = 'AC-101';
-      document.getElementById('studentPhoneInput').value = '9821016457';
       hideError();
     });
 

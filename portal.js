@@ -1227,6 +1227,38 @@
       });
     }
 
+    // Change Password Modal & Form
+    const openChangePassBtn = document.getElementById('openChangePasswordModalBtn');
+    if (openChangePassBtn) {
+      openChangePassBtn.addEventListener('click', () => {
+        document.getElementById('changePasswordForm').reset();
+        document.getElementById('changePassUserDisplay').value = `${currentTeacher.name} (@${currentTeacher.username})`;
+        new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
+      });
+    }
+
+    const changePassForm = document.getElementById('changePasswordForm');
+    if (changePassForm) {
+      changePassForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const p1 = document.getElementById('newPasswordInput').value.trim();
+        const p2 = document.getElementById('confirmNewPasswordInput').value.trim();
+
+        if (p1 !== p2) {
+          alert('Passwords do not match! Please verify both fields.');
+          return;
+        }
+
+        const res = AlphaAuth.updateTeacherPassword(currentTeacher.username, p1);
+        if (res.success) {
+          bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
+          showToast('Password updated and saved to Google Cloud! 🔒');
+        } else {
+          showToast(res.message || 'Error updating password.');
+        }
+      });
+    }
+
     // Add Announcement Modal & Form
     const openAddAnnBtn = document.getElementById('openAddAnnouncementModalBtn');
     if (openAddAnnBtn) {
