@@ -152,6 +152,7 @@
       // Always update local storage first for snappy UI
       const current = getLocalData() || {};
       const merged = Object.assign({}, current, partialOrFullData, {
+        initialized: true,
         lastUpdated: new Date().toISOString(),
         updatedBy: updatedBy
       });
@@ -161,6 +162,7 @@
 
       // Accumulate pending changes
       pendingCloudData = Object.assign(pendingCloudData || {}, partialOrFullData, {
+        initialized: true,
         lastUpdated: new Date().toISOString(),
         updatedBy: updatedBy
       });

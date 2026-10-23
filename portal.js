@@ -78,44 +78,29 @@
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        state.students = parsed.students || [];
+        state.students = Array.isArray(parsed.students) ? parsed.students : [];
         state.attendance = parsed.attendance || {};
         state.fees = parsed.fees || {};
-      } else {
-        // Initialize with realistic demo seed data
-        state.students = DEMO_STUDENTS;
-        const today = getTodayDateKey();
-        const curMonth = getCurrentMonthKey();
-
-        // Seed some attendance for today
-        state.attendance[today] = {
-          '101': 'P', '102': 'P', '103': 'A', '104': 'P',
-          '105': 'P', '106': 'L', '107': 'P', '108': 'P'
-        };
-
-        // Seed some fees for this month
-        state.fees[curMonth] = {
-          '101': { paid: 2500, date: today, mode: 'Cash', receiptNo: 'AC-REC-101', remarks: 'Full fee paid' },
-          '102': { paid: 2500, date: today, mode: 'UPI / GPay / PhonePe', receiptNo: 'AC-REC-102', remarks: 'Google Pay' },
-          '103': { paid: 0, date: '', mode: 'Cash', receiptNo: '', remarks: '' }, // Pending
-          '104': { paid: 4000, date: today, mode: 'UPI / GPay / PhonePe', receiptNo: 'AC-REC-104', remarks: 'PhonePe' },
-          '105': { paid: 1000, date: today, mode: 'Cash', receiptNo: 'AC-REC-105', remarks: 'Part payment' } // Partial
-        };
-        saveData();
+        return;
       }
     } catch (e) {
       console.error('Failed to load portal data', e);
-      state.students = DEMO_STUDENTS;
     }
+    // Clean initial state (never re-inject demo students when starting fresh or empty)
+    state.students = [];
+    state.attendance = {};
+    state.fees = {};
   }
 
   function saveData() {
     try {
-      const full = {
+      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const full = Object.assign({}, existing, {
         students: state.students,
         attendance: state.attendance,
-        fees: state.fees
-      };
+        fees: state.fees,
+        initialized: true
+      });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(full));
       if (typeof window.AlphaFirebase !== 'undefined' && window.AlphaFirebase.isCloudReady()) {
         window.AlphaFirebase.saveToCloud(full, currentTeacher ? currentTeacher.name : 'Teacher');
@@ -790,11 +775,75 @@
 
     if (confirm(`Are you sure you want to delete student "${s.name}" (${s.roll})?`)) {
       state.students = state.students.filter(item => item.id !== studentId);
+
+      // Clean up orphan attendance for this student
+      if (state.attendance) {
+        Object.keys(state.attendance).forEach(dateKey => {
+          if (state.attendance[dateKey] && state.attendance[dateKey][studentId]) {
+            delete state.attendance[dateKey][studentId];
+          }
+        });
+      }
+
+      // Clean up orphan fees for this student
+      if (state.fees) {
+        Object.keys(state.fees).forEach(monthKey => {
+          if (state.fees[monthKey] && state.fees[monthKey][studentId]) {
+            delete state.fees[monthKey][studentId];
+          }
+        });
+      }
+
       saveData();
       renderStudentsTable();
       populateDropdowns();
       showToast(`Student ${s.name} deleted.`);
     }
+  }
+
+  const DEMO_STUDENT_IDS = ['101', '102', '103', '104', '105', '106', '107', '108'];
+
+  function clearAllDemoStudents() {
+    const demoFound = state.students.some(s => DEMO_STUDENT_IDS.includes(String(s.id)) || String(s.roll).startsWith('AC-10'));
+
+    let confirmMsg = '';
+    if (demoFound) {
+      confirmMsg = 'Are you sure you want to delete all demo/dummy students? Any real students you added will remain safe.';
+    } else if (state.students.length > 0) {
+      confirmMsg = 'Are you sure you want to delete all students from the directory?';
+    } else {
+      showToast('Student directory is already empty. You can enroll your real students anytime!');
+      return;
+    }
+
+    if (!confirm(confirmMsg)) return;
+
+    if (demoFound) {
+      // Filter out demo students, preserve any user-created real students
+      state.students = state.students.filter(s => !DEMO_STUDENT_IDS.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+      DEMO_STUDENT_IDS.forEach(id => {
+        if (state.attendance) {
+          Object.keys(state.attendance).forEach(dateKey => {
+            if (state.attendance[dateKey]) delete state.attendance[dateKey][id];
+          });
+        }
+        if (state.fees) {
+          Object.keys(state.fees).forEach(monthKey => {
+            if (state.fees[monthKey]) delete state.fees[monthKey][id];
+          });
+        }
+      });
+    } else {
+      state.students = [];
+      state.attendance = {};
+      state.fees = {};
+    }
+
+    saveData();
+    renderStudentsTable();
+    populateDropdowns();
+    updateKPIs();
+    showToast('Demo students cleared successfully! 🗑️');
   }
 
   /* ==========================================================================
@@ -1063,7 +1112,7 @@
         if (typeof window.AlphaFirebase !== 'undefined') {
           window.AlphaFirebase.fetchLatestCloudData().then(cloudData => {
             if (cloudData) {
-              if (cloudData.students && Array.isArray(cloudData.students)) state.students = cloudData.students;
+              if (Array.isArray(cloudData.students)) state.students = cloudData.students;
               if (cloudData.attendance) state.attendance = cloudData.attendance;
               if (cloudData.fees) state.fees = cloudData.fees;
               updateKPIs();
@@ -1082,6 +1131,11 @@
     document.getElementById('viewAllFeesBtn').addEventListener('click', () => {
       switchTab('fees');
     });
+
+    const clearDemoBtn = document.getElementById('clearDemoStudentsBtn');
+    if (clearDemoBtn) {
+      clearDemoBtn.addEventListener('click', clearAllDemoStudents);
+    }
 
     document.getElementById('addNewStudentBtn').addEventListener('click', () => {
       document.getElementById('studentModalTitle').textContent = 'Add New Student';
@@ -1336,7 +1390,7 @@
     if (typeof window.AlphaFirebase !== 'undefined') {
       window.AlphaFirebase.initSync(function (cloudData, source) {
         if (cloudData) {
-          if (cloudData.students && Array.isArray(cloudData.students)) {
+          if (Array.isArray(cloudData.students)) {
             state.students = cloudData.students;
           }
           if (cloudData.attendance) {

@@ -429,11 +429,16 @@
            ====================================================================== -->
       <section id="tab-students" class="portal-tab-content d-none">
         <div class="portal-card">
-          <div class="portal-card-header">
-            <h2><i class="bi bi-people-fill text-danger"></i> Student Roster & Profiles</h2>
-            <button class="btn btn-sm btn-danger" id="addNewStudentBtn">
-              <i class="bi bi-person-plus-fill"></i> Add New Student
-            </button>
+          <div class="portal-card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h2 class="mb-0"><i class="bi bi-people-fill text-danger"></i> Student Roster & Profiles</h2>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-danger" id="clearDemoStudentsBtn" title="Remove dummy/demo sample students">
+                <i class="bi bi-trash3"></i> Clear Demo Students
+              </button>
+              <button class="btn btn-sm btn-danger" id="addNewStudentBtn">
+                <i class="bi bi-person-plus-fill"></i> Add New Student
+              </button>
+            </div>
           </div>
 
           <div class="portal-card-body">

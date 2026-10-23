@@ -72,6 +72,7 @@
 
   function saveStorageData(fullData) {
     try {
+      fullData.initialized = true;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(fullData));
     } catch (e) {
       console.error('Failed to write storage', e);
@@ -82,23 +83,33 @@
     }
   }
 
-  // Ensure default teachers, students, and announcements exist in storage
+  // Ensure default teachers and announcements exist in storage without forcing dummy students
   function initAuthData() {
     const data = getStorageData();
     let updated = false;
 
-    if (!data.teachers || data.teachers.length === 0) {
+    // If initialized flag is set, NEVER overwrite user's deleted students or teachers!
+    if (data.initialized === true) {
+      return;
+    }
+
+    if (!data.teachers || !Array.isArray(data.teachers) || data.teachers.length === 0) {
       data.teachers = DEFAULT_TEACHERS;
       updated = true;
     }
-    if (!data.announcements || data.announcements.length === 0) {
+    if (!data.announcements || !Array.isArray(data.announcements)) {
       data.announcements = DEFAULT_ANNOUNCEMENTS;
       updated = true;
     }
-    if (!data.students || data.students.length === 0) {
-      data.students = DEFAULT_STUDENTS;
+    // Students list: Ensure array exists, but NEVER force dummy students when empty!
+    if (!Array.isArray(data.students)) {
+      data.students = [];
       updated = true;
     }
+
+    data.initialized = true;
+    updated = true;
+
     if (updated) {
       saveStorageData(data);
     }
@@ -109,9 +120,7 @@
   // Listen for real-time cloud updates
   if (typeof window !== 'undefined') {
     window.addEventListener('alpha-cloud-data', function (e) {
-      if (e.detail) {
-        initAuthData();
-      }
+      // Passive listener: never re-seed demo students on incoming cloud sync
     });
   }
 
