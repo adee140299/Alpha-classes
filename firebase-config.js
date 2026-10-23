@@ -19,7 +19,9 @@
   const STORAGE_KEY = 'alpha_classes_data_v1';
   let db = null;
   let isCloudActive = false;
-  let isSyncing = false;
+  let pendingCloudData = null;
+  let syncTimeout = null;
+  let isCloudWriteInFlight = false;
 
   // Initialize Firebase App
   try {
@@ -54,6 +56,32 @@
     } catch (e) {}
   }
 
+  function flushPendingCloudData() {
+    if (!AlphaFirebase.isCloudReady() || !pendingCloudData) return;
+    if (isCloudWriteInFlight) return; // Will flush when in-flight request finishes
+
+    const toWrite = Object.assign({}, pendingCloudData);
+    pendingCloudData = null;
+    isCloudWriteInFlight = true;
+
+    DOC_REF.set(toWrite, { merge: true })
+      .then(() => {
+        isCloudWriteInFlight = false;
+        AlphaFirebase.broadcastCloudStatus(true);
+        if (pendingCloudData) {
+          flushPendingCloudData();
+        }
+      })
+      .catch((err) => {
+        isCloudWriteInFlight = false;
+        console.error('Cloud save failed:', err);
+        AlphaFirebase.broadcastCloudStatus(false, err.message);
+        if (pendingCloudData) {
+          flushPendingCloudData();
+        }
+      });
+  }
+
   const AlphaFirebase = {
     isCloudReady() {
       return isCloudActive && db !== null;
@@ -73,8 +101,12 @@
       }
 
       // Realtime listener for cross-device synchronization
-      DOC_REF.onSnapshot((doc) => {
+      DOC_REF.onSnapshot({ includeMetadataChanges: true }, (doc) => {
         if (doc.exists) {
+          // If this event is from local optimistic writes, skip to prevent race conditions
+          if (doc.metadata && doc.metadata.hasPendingWrites) {
+            return;
+          }
           const cloudData = doc.data();
           // Update local cache so offline works seamlessly
           setLocalData(cloudData);
@@ -114,7 +146,7 @@
     },
 
     /**
-     * Save full institute data to Google Cloud Firestore
+     * Save full institute data to Google Cloud Firestore without dropping writes
      */
     saveToCloud(partialOrFullData, updatedBy = 'Teacher') {
       // Always update local storage first for snappy UI
@@ -125,21 +157,36 @@
       });
       setLocalData(merged);
 
-      if (!this.isCloudReady() || isSyncing) return Promise.resolve(merged);
+      if (!this.isCloudReady()) return Promise.resolve(merged);
 
-      isSyncing = true;
-      return DOC_REF.set(merged, { merge: true })
-        .then(() => {
-          isSyncing = false;
+      // Accumulate pending changes
+      pendingCloudData = Object.assign(pendingCloudData || {}, partialOrFullData, {
+        lastUpdated: new Date().toISOString(),
+        updatedBy: updatedBy
+      });
+
+      // Debounce 150ms so rapid clicks are batched smoothly
+      if (syncTimeout) clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(flushPendingCloudData, 150);
+
+      return Promise.resolve(merged);
+    },
+
+    /**
+     * Force fetch fresh data directly from server
+     */
+    fetchLatestCloudData() {
+      if (!this.isCloudReady()) return Promise.resolve(getLocalData());
+      return DOC_REF.get({ source: 'server' }).then(doc => {
+        if (doc.exists) {
+          const cloudData = doc.data();
+          setLocalData(cloudData);
           this.broadcastCloudStatus(true);
-          return merged;
-        })
-        .catch((err) => {
-          isSyncing = false;
-          console.error('Cloud save failed, local cache preserved:', err);
-          this.broadcastCloudStatus(false, err.message);
-          return merged;
-        });
+          window.dispatchEvent(new CustomEvent('alpha-cloud-data', { detail: cloudData }));
+          return cloudData;
+        }
+        return getLocalData();
+      });
     },
 
     /**

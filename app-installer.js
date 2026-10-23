@@ -5,16 +5,27 @@
 (function () {
   'use strict';
 
-  // 1. Register Service Worker
+  // 1. Register Service Worker & Auto-Check Updates
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
         .then((reg) => {
           console.log('✅ ServiceWorker registered with scope:', reg.scope);
+          // Check for service worker updates immediately
+          reg.update();
         })
         .catch((err) => {
           console.warn('⚠️ ServiceWorker registration failed:', err);
         });
+
+      // Reload page once when new service worker activates
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
     });
   }
 

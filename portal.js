@@ -1056,6 +1056,29 @@
       switchTab('attendance');
     });
 
+    const forceSyncBtn = document.getElementById('forceSyncCloudBtn');
+    if (forceSyncBtn) {
+      forceSyncBtn.addEventListener('click', () => {
+        forceSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Syncing...';
+        if (typeof window.AlphaFirebase !== 'undefined') {
+          window.AlphaFirebase.fetchLatestCloudData().then(cloudData => {
+            if (cloudData) {
+              if (cloudData.students && Array.isArray(cloudData.students)) state.students = cloudData.students;
+              if (cloudData.attendance) state.attendance = cloudData.attendance;
+              if (cloudData.fees) state.fees = cloudData.fees;
+              updateKPIs();
+              populateDropdowns();
+              switchTab(state.activeTab);
+              showToast('Latest data synced from Google Cloud! ☁️');
+            }
+            forceSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Sync';
+          }).catch(() => {
+            forceSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Sync';
+          });
+        }
+      });
+    }
+
     document.getElementById('viewAllFeesBtn').addEventListener('click', () => {
       switchTab('fees');
     });
@@ -1313,7 +1336,7 @@
     if (typeof window.AlphaFirebase !== 'undefined') {
       window.AlphaFirebase.initSync(function (cloudData, source) {
         if (cloudData) {
-          if (cloudData.students && Array.isArray(cloudData.students) && cloudData.students.length > 0) {
+          if (cloudData.students && Array.isArray(cloudData.students)) {
             state.students = cloudData.students;
           }
           if (cloudData.attendance) {
@@ -1323,12 +1346,9 @@
             state.fees = cloudData.fees;
           }
           updateKPIs();
-          if (state.activeTab === 'attendance') renderDailyAttendanceTable();
-          if (state.activeTab === 'monthly-register') renderMonthlyRegister();
-          if (state.activeTab === 'fees') renderFeeTable();
-          if (state.activeTab === 'students') renderStudentsTable();
-          if (state.activeTab === 'teachers') renderTeachersTable();
-          if (state.activeTab === 'announcements') renderTeacherAnnouncements();
+          populateDropdowns();
+          // Seamlessly re-render currently active view with live cloud data
+          switchTab(state.activeTab);
         }
       });
     }

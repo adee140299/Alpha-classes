@@ -1,9 +1,9 @@
 /**
- * Alpha Classes — Progressive Web App Service Worker
- * Enables offline caching, fast launches, and installability on iOS and Android.
+ * Alpha Classes — Progressive Web App Service Worker (v2.5)
+ * Network-First strategy for live data & scripts, offline cache fallback.
  */
 
-const CACHE_NAME = 'alpha-classes-v1.0';
+const CACHE_NAME = 'alpha-classes-v2.5';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -23,6 +23,7 @@ const ASSETS_TO_CACHE = [
   './portal.js',
   './student-portal.js',
   './firebase-config.js',
+  './app-installer.js',
   './manifest.json',
   './images/app-icon-192.png',
   './images/app-icon-512.png',
@@ -34,26 +35,27 @@ const ASSETS_TO_CACHE = [
   './images/science.png'
 ];
 
-// Install: Cache core application assets
+// Install: Cache core assets and activate immediately
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('⚡ Alpha Classes SW: Caching app assets');
+      console.log('⚡ Alpha Classes SW: Pre-caching app shell assets');
       return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.warn('Non-critical cache pre-fetch warning:', err);
+        console.warn('Cache pre-fetch warning:', err);
       });
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
-// Activate: Clean up old caches
+// Activate: Remove all previous old caches immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('🧹 Alpha Classes SW: Removing old cache', key);
+            console.log('🧹 Alpha Classes SW: Purging old cache', key);
             return caches.delete(key);
           }
         })
@@ -62,35 +64,63 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Network-first for Firestore API / CDN, Stale-while-revalidate for local assets
+// Fetch: Always bypass Firebase APIs. Use Network-First for HTML/JS/CSS, Cache-First for static images.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Allow Firebase and external APIs to go directly to network
+  // 1. Direct pass-through for Firebase, Google APIs, and external CDNs
   if (url.origin.includes('firestore.googleapis.com') ||
       url.origin.includes('firebaseio.com') ||
-      url.origin.includes('googleapis.com')) {
+      url.origin.includes('googleapis.com') ||
+      url.origin.includes('gstatic.com')) {
     return;
   }
 
+  // Only handle GET requests
+  if (event.request.method !== 'GET') return;
+
+  const isStaticImage = url.pathname.endsWith('.png') ||
+                        url.pathname.endsWith('.jpg') ||
+                        url.pathname.endsWith('.jpeg') ||
+                        url.pathname.endsWith('.svg');
+
+  if (isStaticImage) {
+    // Images: Cache-first, network fallback
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        return cached || fetch(event.request).then((res) => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(event.request, copy));
+          }
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // HTML / JS / CSS / JSON: Network-First!
+  // Ensures website updates & data changes reflect immediately across installed apps and browsers!
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // Return cached asset immediately if available, fetch update in background
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
           });
         }
         return networkResponse;
-      }).catch(() => {
-        // Network offline, return cached or fallback
-        return cachedResponse;
-      });
-
-      return cachedResponse || fetchPromise;
-    })
+      })
+      .catch(() => {
+        // Network offline -> return cached response
+        return caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          if (event.request.mode === 'navigate') {
+            return caches.match('./index.html');
+          }
+        });
+      })
   );
 });
-

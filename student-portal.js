@@ -62,6 +62,33 @@
       window.location.href = 'index.html';
     });
 
+    const stSyncBtn = document.getElementById('stSyncBtn');
+    if (stSyncBtn) {
+      stSyncBtn.addEventListener('click', () => {
+        stSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Syncing...';
+        if (typeof window.AlphaFirebase !== 'undefined') {
+          window.AlphaFirebase.fetchLatestCloudData().then(cloudData => {
+            if (cloudData) {
+              if (cloudData.students && Array.isArray(cloudData.students)) {
+                const updated = cloudData.students.find(s => s.id === student.id || s.roll === student.roll);
+                if (updated) {
+                  Object.assign(student, updated);
+                  document.getElementById('stName').textContent = student.name;
+                  document.getElementById('stMeta').textContent = `${student.grade} • ${student.batch} Batch`;
+                }
+              }
+              renderStudentAttendance();
+              renderStudentFees();
+              renderStudentAnnouncements();
+            }
+            stSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Sync';
+          }).catch(() => {
+            stSyncBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Sync';
+          });
+        }
+      });
+    }
+
     // 7. Real-time Google Cloud Sync
     if (typeof window.AlphaFirebase !== 'undefined') {
       window.AlphaFirebase.initSync(function (cloudData) {
