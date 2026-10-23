@@ -69,8 +69,9 @@
       if (saved) {
         const parsed = JSON.parse(saved);
         const rawStudents = Array.isArray(parsed.students) ? parsed.students : [];
+        const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
         const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-        state.students = rawStudents.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+        state.students = rawStudents.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
         state.attendance = parsed.attendance || {};
         state.fees = parsed.fees || {};
         return;
@@ -1062,8 +1063,9 @@
           window.AlphaFirebase.fetchLatestCloudData().then(cloudData => {
             if (cloudData) {
               if (Array.isArray(cloudData.students)) {
+                const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
                 const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-                state.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+                state.students = cloudData.students.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
               }
               if (cloudData.attendance) state.attendance = cloudData.attendance;
               if (cloudData.fees) state.fees = cloudData.fees;
@@ -1340,8 +1342,9 @@
       window.AlphaFirebase.initSync(function (cloudData, source) {
         if (cloudData) {
           if (Array.isArray(cloudData.students)) {
+            const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
             const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-            state.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+            state.students = cloudData.students.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
           }
           if (cloudData.attendance) {
             state.attendance = cloudData.attendance;

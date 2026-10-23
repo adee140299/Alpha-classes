@@ -81,8 +81,9 @@
 
     // Purge any residual demo students if present in local storage
     if (Array.isArray(data.students)) {
+      const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
       const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-      const filtered = data.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+      const filtered = data.students.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
       if (filtered.length !== data.students.length) {
         data.students = filtered;
         updated = true;

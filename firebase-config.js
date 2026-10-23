@@ -119,8 +119,9 @@
 
           // Strip any residual demo student IDs from incoming cloud sync
           if (Array.isArray(cloudData.students)) {
+            const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
             const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-            cloudData.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+            cloudData.students = cloudData.students.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
           }
 
           // Update local cache so offline works seamlessly
@@ -198,8 +199,9 @@
         if (doc.exists) {
           const cloudData = doc.data();
           if (Array.isArray(cloudData.students)) {
+            const demoNames = ['Aryan Sharma', 'Sneha Patil', 'Rohan Gupta', 'Pooja Verma', 'Aditya Deshmukh', 'Neha Khan', 'Tanmay Joshi', 'Ananya Yadav'];
             const demoIds = ['101', '102', '103', '104', '105', '106', '107', '108'];
-            cloudData.students = cloudData.students.filter(s => !demoIds.includes(String(s.id)) && !String(s.roll).startsWith('AC-10'));
+            cloudData.students = cloudData.students.filter(s => !(demoIds.includes(String(s.id)) && demoNames.includes(String(s.name))));
           }
           setLocalData(cloudData);
           this.broadcastCloudStatus(true);

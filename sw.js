@@ -1,9 +1,9 @@
 /**
- * Alpha Classes — Progressive Web App Service Worker (v2.7)
+ * Alpha Classes — Progressive Web App Service Worker (v2.8)
  * Network-First strategy for live data & scripts, offline cache fallback.
  */
 
-const CACHE_NAME = 'alpha-classes-v2.7';
+const CACHE_NAME = 'alpha-classes-v2.8';
 
 const ASSETS_TO_CACHE = [
   './',
